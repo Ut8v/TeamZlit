@@ -1,5 +1,8 @@
 # TeamZlit
 
+![Team (1)](https://github.com/user-attachments/assets/b95632b8-136a-44f2-ac5e-d91698e077d4)
+
+
 This repository contains both the client and server components of the TeamZlit project. Follow the instructions below to run the project locally.
 
 ## Prerequisites
