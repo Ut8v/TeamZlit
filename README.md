@@ -89,3 +89,6 @@ PORT = 3000
  
 - **React-Bootstrap**
   - [React-bootstrap documentation](https://react-bootstrap.github.io)
+
+- **Prisma**
+  - [prisma doc](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/using-prisma-migrate-node-postgresql)
