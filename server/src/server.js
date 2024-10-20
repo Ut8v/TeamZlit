@@ -1,12 +1,12 @@
 const express = require(`express`);
 require('dotenv').config();
-
-const router = express();
+const app = express();
 const PORT = process.env.PORT;
-router.listen(PORT, ()=> {
+
+app.listen(PORT, ()=> {
     console.log(`server running`);
 });
 
-module.exports = router;
+module.exports = app;
 
 
