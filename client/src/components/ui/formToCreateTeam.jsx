@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
   teamName: z.string().min(2, {
@@ -53,6 +54,7 @@ export function FormToCreateTeam() {
           )}
         />
         <Button type="submit">Submit</Button>
+        <Checkbox />
       </form>
     </Form>
   );
