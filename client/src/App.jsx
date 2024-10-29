@@ -5,14 +5,19 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Page1 from './pages/Page1';
 import { FormToFindTeam } from './components/ui/formToFindTeam';
+import ProfileBar from './components/ProfileBar'; 
+
+import './App.css';
 
 function App() {
-
   return (
     <div className="app-container">
+      {/* Left Navigation Bar */}
       <div className="navigation-bar">
         <NavigationBar />
       </div>
+
+      {/* Main page content */}
       <div className="page-content">
         <BrowserRouter>
           <Routes>
@@ -22,8 +27,13 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
+
+      {/* Right Profile Bar */}
+      <div className="profile-bar">
+        <ProfileBar />
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

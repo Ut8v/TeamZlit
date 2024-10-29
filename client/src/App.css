@@ -1,28 +1,45 @@
-
 .app-container {
-    display: flex;
-    flex-direction: row; 
-    height: 100vh; 
-  }
-  
-  .navigation-bar {
-    width: 250px; 
-    background-color: #0c2d48;
-    color: white;
-    height: 100vh; 
-    position: fixed; 
-    top: 0;
-    left: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: start; 
-  }
-  
-  .page-content {
-    margin-left: 250px; 
-    padding: 20px; 
-    width: calc(100% - 250px);
-    overflow-y: auto;
-  }
-  
+  display: flex;
+  flex-direction: row; 
+  height: 100vh;
+}
+
+/* Navigation bar on the left */
+.navigation-bar {
+  width: 250px;
+  background-color: #0c2d48;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+/* Profile bar on the right */
+.profile-bar {
+  width: 250px;
+  background-color: #0c2d48;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+/* Main content between the two bars */
+.page-content {
+  margin-left: 250px; /* Leave space for navigation bar */
+  margin-right: 250px; /* Leave space for profile bar */
+  padding: 20px;
+  width: calc(100% - 500px); /* Account for both sidebars */
+  overflow-y: auto;
+}
+
