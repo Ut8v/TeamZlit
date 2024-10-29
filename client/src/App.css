@@ -18,6 +18,19 @@
     flex-direction: column;
     justify-content: start; 
   }
+  .profile-bar {
+    width: 250px; 
+    background-color: #0c2d48;
+    color: white;
+    height: 100vh; 
+    position: fixed; 
+    top: 0;
+    right: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start; 
+  }
   
   .page-content {
     margin-left: 250px; 

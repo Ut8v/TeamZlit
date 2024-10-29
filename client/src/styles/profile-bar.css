@@ -1,0 +1,44 @@
+.profile-bar-container {
+    position: fixed;
+    top: 0;
+    right: 0; /* Align the profile bar to the right */
+    height: 100%;
+    width: 250px;
+    background-color: #0f3445;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Adjust shadow for right alignment */
+}
+
+.profile-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the profile content */
+}
+
+.profile-pic {
+    height: 200px;
+    border: 2px solid red;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    font-size: 1.2rem;
+    color: white;
+    text-align: center;
+}
+
+.logout-button {
+    margin-top: auto;
+    padding: 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.logout-button:hover {
+    background-color: #ff1a1a;
+}
