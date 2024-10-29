@@ -1,9 +1,11 @@
-import React from 'react';
+import NavigationBar from './components/nav-bar';
+import './App.css';
+import './styles/nav-bar.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Page1 from './pages/Page1';
-import NavBar from './components/nav-bar';
-import ProfileBar from './components/ProfileBar'; // Ensure the exact case is used
+import { FormToFindTeam } from './components/ui/formToFindTeam';
+import ProfileBar from './components/ProfileBar'; 
 
 import './App.css';
 
@@ -12,7 +14,7 @@ function App() {
     <div className="app-container">
       {/* Left Navigation Bar */}
       <div className="navigation-bar">
-        <NavBar />
+        <NavigationBar />
       </div>
 
       {/* Main page content */}
@@ -21,12 +23,15 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/page1" element={<Page1 />} />
+            <Route path="/findTeam" element={<FormToFindTeam />} />
           </Routes>
         </BrowserRouter>
       </div>
 
       {/* Right Profile Bar */}
-      <ProfileBar />
+      <div className="profile-bar">
+        <ProfileBar />
+      </div>
     </div>
   );
 }
