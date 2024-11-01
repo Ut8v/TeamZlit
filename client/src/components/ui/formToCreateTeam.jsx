@@ -1,16 +1,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { format } from "date-fns";
 import { z } from "zod";
-import { Calendar as CalendarIcon } from "lucide-react"
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,18 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-// We'll want to later pull these options from a table
-const roleOptions = ["Developer", "Designer", "Manager"];
 
 const formSchema = z.object({
   teamName: z.string().min(3, { message: "Team Name must be at least 3 characters.", }),
