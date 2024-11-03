@@ -40,3 +40,21 @@ model lookingForTeam {
   updatedAt        DateTime @updatedAt
 }
 
+model createTeam {
+  id               Int      @id @default(autoincrement())
+  userId          BigInt
+  teamName        String
+  teamDescription String
+  teamType        String
+  rolesRequiredId Int
+  skills          String[]
+  visibilityId    String
+  additionalNotes String?
+}
+
+model rolesRequired {
+  id               Int      @id @default(autoincrement())
+  teamId           Int
+  role             String
+  quantity         Int
+}
