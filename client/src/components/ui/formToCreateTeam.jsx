@@ -1,8 +1,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,56 +24,56 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { FormToCreateTeamService } from "../../services/FormToCreateService/createTeam"
+import { useState } from "react";
 
+const FormToCreateTeamComponent = () => {
+
+  const [responseText, setResponseText ] = useState();
 
 const formSchema = z.object({
   teamName: z.string().min(3, { message: "Team Name must be at least 3 characters.", }),
   teamDescription: z.string().min(2, { message: "Team Description must be at least 2 characters.", }),
-  roles: z.array(
-    z.object({
-      role: z.string().nonempty("Please select a role"),
-      numberOfPeople: z
-        .number()
-        .min(1, { message: "Must be at least 1 person" })
-        .int("Must be a whole number"),
-    })
-  ).min(1, { message: "At least one role is required." })
-   .refine(roles => roles.reduce((acc, curr) => acc + curr.numberOfPeople, 0) > 2, {
-     message: "Total number of people in all roles must be greater than two."
-   }),
-  date: z.object({
-    from: z.date(),
-    to: z.date(),
+  teamType: z.string().min(1, { message: "Team Type is required." }),
+  roles: z.string().min(2, { message: "Roles must be at least 2 characters.", }),
+  skills: z.array(z.string()).min(1, {
+    message: "Select at least one skill.",
   }),
   teamVisibility: z.enum(["private", "public"], {
     required_error: "You need to select a visibility."
   }),
-  skills: z.array(z.string()).min(1, {
-    message: "Select at least one skill.",
-  }),
   additionalNotes: z.string().optional(),
 });
 
-export function FormToCreateTeam() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       teamName: "",
       teamDescription: "",
-      roles: [{ role: "", numberOfPeople: 1 }],
+      teamType: "",
+      roles: "",
       skills: [],
+      teamVisibility: "",
       additionalNotes: "",
     },
   });
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "roles",
-  });
-
-  function onSubmit(values) {
+  
+  async function onSubmit(values) {
+    console.log('test');
     console.log(values);
+    // const response = await FormToCreateTeamService.createTeam(values);
+    // console.log(response, `response txt`)
+    // setResponseText(response.message);
+
+    // if(response.success){
+    //    form.reset();
+    // }
+    
   }
+
+  const Clear = () => {
+    form.reset();
+ }
 
   return (
     <Form {...form}>
@@ -111,7 +110,23 @@ export function FormToCreateTeam() {
           )}
         />
 
-        <FormField
+<FormField
+          control={form.control}
+          name="teamType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Team Type</FormLabel>
+              <FormControl>
+                <Textarea 
+                  placeholder="Research" {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* <FormField
           control={form.control}
           name="teamType"
           render={({ field }) => (
@@ -134,73 +149,24 @@ export function FormToCreateTeam() {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         
 
-        {fields.map((field, index) => (
-          <FormItem key={field.id} className="flex items-center space-x-4">
-            <FormField
-              control={form.control}
-              name={`roles.${index}.role`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Roles Required</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-[360px]">
-                        <SelectValue placeholder="Select Role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Roles</SelectLabel>
-                          <SelectItem value="Developer">Developer</SelectItem>
-                          <SelectItem value="Designer">Designer</SelectItem>
-                          <SelectItem value="Manager">Manager</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name={`roles.${index}.count`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      min="1"
-                      placeholder="How many?"
-                      {...field}
-                      className="w-[125px]"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button
-              type="button"
-              onClick={() => remove(index)}
-              className="bg-red-500"
-            >
-              Remove
-            </Button>
-          </FormItem>
-        ))}
-
-        <Button
-          type="button"
-          onClick={() => append({ role: "", count: 1 })}
-          className="mt-2"
-        >
-          Add Role
-        </Button>
+        <FormField
+          control={form.control}
+          name="roles"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Roles</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="Roles go here" {...field} 
+                />
+              </FormControl>
+              <FormMessage />   
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -309,7 +275,14 @@ export function FormToCreateTeam() {
         />
 
         <Button type="submit">Submit</Button>
+        {responseText}
+        <button onClick={Clear}
+         style={{marginLeft: `20px`}}
+        >Clear</button>
       </form>
     </Form>
   );
 }
+
+
+export default FormToCreateTeamComponent;
