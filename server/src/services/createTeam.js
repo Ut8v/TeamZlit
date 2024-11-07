@@ -8,12 +8,11 @@ class FormToCreateTeamService {
            console.log(data);
             const createForTeam = await prisma.createTeam.create({
                 data: {
-                  username: data.formData.email,
                   email: data.formData.email,
                   teamName: data.formData.teamName,
                   teamDescription: data.formData.teamDescription,
                   teamType: data.formData.teamType,
-                  rolesRequiredId: 1,
+                  roles: data.formData.roles,
                   skills: data.formData.skills, 
                   visibility: data.formData.visibility,
                   additionalNotes: data.formData.additionalNotes,
