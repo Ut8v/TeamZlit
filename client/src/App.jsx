@@ -12,6 +12,7 @@ import './App.css';
 
 function App() {
   return (
+    <BrowserRouter>
     <div className="app-container">
       {/* Left Navigation Bar */}
       <div className="navigation-bar">
@@ -20,14 +21,12 @@ function App() {
 
       {/* Main page content */}
       <div className="page-content">
-        <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/page1" element={<Page1 />} />
             <Route path="/findTeam" element={<FormToFindTeamComponent />} />
             <Route path="/createTeam" element={<FormToCreateTeam />} />
           </Routes>
-        </BrowserRouter>
       </div>
 
       {/* Right Profile Bar */}
@@ -35,6 +34,7 @@ function App() {
         <ProfileBar />
       </div>
     </div>
+    </BrowserRouter>
   );
 }
 
