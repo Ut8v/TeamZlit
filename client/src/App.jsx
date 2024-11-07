@@ -7,6 +7,7 @@ import Page1 from './pages/Page1';
 import FormToFindTeamComponent from './components/ui/formToFindTeam';
 import ProfileBar from './components/ProfileBar'; 
 import { FormToCreateTeam } from './components/ui/formToCreateTeam';
+import { Toaster } from "@/components/ui/toaster"
 
 import './App.css';
 
@@ -34,6 +35,8 @@ function App() {
       <div className="profile-bar">
         <ProfileBar />
       </div>
+
+      <Toaster />
     </div>
   );
 }

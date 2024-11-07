@@ -3,6 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast"
+
 import {
   Form,
   FormControl,
@@ -19,8 +21,7 @@ import { FormToFindTeamService } from "../../services/FormToFindService/findTeam
 import { useState } from "react";
 
 const FormToFindTeamComponent = () => {
-
-const [responseText, setResponseText ] = useState();
+const { toast } = useToast()
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -57,11 +58,20 @@ const formSchema = z.object({
 
   async function onSubmit(values) {
     const response = await FormToFindTeamService.findTeam(values);
-    console.log(response, `response txt`)
-    setResponseText(response.message);
 
     if(response.success){
+      toast({
+        variant: `success`,
+        title: "Success",
+        description: "Form submitted successfully.",
+      })
        form.reset();
+    }else {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: `${response.message}`,
+      })
     }
     
   }
