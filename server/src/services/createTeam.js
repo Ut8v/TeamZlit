@@ -5,7 +5,8 @@ class FormToCreateTeamService {
 
     static async createTeam (data) {
         try{
-            const createForTeam = await prisma.createForTeam.create({
+           console.log(data);
+            const createForTeam = await prisma.createTeam.create({
                 data: {
                   username: data.formData.email,
                   email: data.formData.email,
@@ -30,7 +31,7 @@ class FormToCreateTeamService {
                   };
                 }
               }
-            return {success: false, error: err.message};
+            return {success: false, error: error.message};
         }
        
     }

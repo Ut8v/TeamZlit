@@ -61,14 +61,13 @@ const formSchema = z.object({
   async function onSubmit(values) {
     console.log('test');
     console.log(values);
-    // const response = await FormToCreateTeamService.createTeam(values);
-    // console.log(response, `response txt`)
-    // setResponseText(response.message);
+    const response = await FormToCreateTeamService.createTeam(values);
+    console.log(response, `response txt`)
+    setResponseText(response.message);
 
-    // if(response.success){
-    //    form.reset();
-    // }
-    
+    if(response.success){
+       form.reset();
+    }
   }
 
   const Clear = () => {
@@ -170,7 +169,7 @@ const formSchema = z.object({
 
         <FormField
           control={form.control}
-          name="skillsRequired"
+          name="skills"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Skills Required</FormLabel>

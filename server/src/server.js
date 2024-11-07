@@ -5,6 +5,7 @@ const PORT = process.env.PORT;
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const findTeamRoutes = require('./routes/findTeam/findTeam');
+const createTeamRoutes = require('./routes/createTeam/createTeam');
 
 app.use(cors({
     origin: process.env.URL, 
@@ -17,6 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //find Team routes 
 app.use('/findTeam', findTeamRoutes);
+
+//create team routes
+app.use('/createTeam', createTeamRoutes);
 
 app.listen(PORT, ()=> {
     console.log(`server running`);
