@@ -26,10 +26,13 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { FormToCreateTeamService } from "../../services/FormToCreateService/createTeam"
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast"
 
 const FormToCreateTeamComponent = () => {
 
-  const [responseText, setResponseText ] = useState();
+const [responseText, setResponseText ] = useState();
+
+const { toast } = useToast()
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address."),
@@ -61,13 +64,23 @@ const formSchema = z.object({
   });
   
   async function onSubmit(values) {
-    console.log(values);
     const response = await FormToCreateTeamService.createTeam(values);
     console.log(response, `response txt`)
     setResponseText(response.message);
 
     if(response.success){
+      toast({
+        variant: `success`,
+        title: "Success",
+        description: "Form submitted successfully.",
+      })
        form.reset();
+    }else {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: `${response.message}`,
+      })
     }
   }
 
