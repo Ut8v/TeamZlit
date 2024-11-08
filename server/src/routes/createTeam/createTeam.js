@@ -6,7 +6,7 @@ router.post('/', async (req, res)=> {
     const data = req.body;
     const response = await FormToCreateTeamService.createTeam(data);
 
-    console.log(`response`, response);
+    console.log(`responseeeeee`, response);
 
     if (response.success) {
         res.status(201).json({

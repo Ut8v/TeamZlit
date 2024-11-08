@@ -14,7 +14,7 @@ class FormToCreateTeamService {
                   teamType: data.formData.teamType,
                   roles: data.formData.roles,
                   skills: data.formData.skills, 
-                  visibility: data.formData.visibility,
+                  visibility: data.formData.teamVisibility,
                   additionalNotes: data.formData.additionalNotes,
                 },
               })
