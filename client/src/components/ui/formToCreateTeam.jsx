@@ -102,7 +102,7 @@ const formSchema = z.object({
           <FormItem className="w-1/2">
             <FormLabel>Team Type</FormLabel>
             <FormControl>
-            <Select>
+            <Select {...field} onValueChange={field.onChange}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a team type" />
               </SelectTrigger>
