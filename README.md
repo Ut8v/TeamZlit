@@ -50,6 +50,14 @@ as
 PORT = 3000
 ```
 
+## Test
+-- Note: create a .env file in tests folder and use `PAGE_URL= http://localhost:5173 or port your client is running on`
+```bash
+cd tests
+npm install
+npm run test
+```
+
 ## Resources
 
 - **React**
