@@ -1,15 +1,14 @@
 import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export class FormToCreateTeamService {
-  static async createTeam(formData) {
-    //console.log(formData);
-    //console.log(apiUrl);
+export class FormToCreateUserService {
+  static async createUser(formData) {
+    console.log(formData);
+    console.log(apiUrl);
     try {
       const response = await axios({
         method: 'post',
-        //headers: { 'content-type': 'application/json' },
-        url: `${apiUrl}/createTeam`,
+        url: `${apiUrl}/createUser`,
         data: {
           formData,
         },
