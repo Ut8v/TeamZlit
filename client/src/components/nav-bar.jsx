@@ -13,6 +13,7 @@ const NavigationBar = () => {
             <Link to="/page1" className="nav-link">Page 1</Link>
             <Link to="/findTeam" className="nav-link">Find Team</Link>
             <Link to="/createTeam" className="nav-link">Create Team</Link>
+            <Link to="/teamBrowser" className="nav-link">Team Browser</Link>
         </Nav>
       </Navbar>
     )
