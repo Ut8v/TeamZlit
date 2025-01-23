@@ -19,9 +19,12 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { Checkbox } from "./checkbox";
 import { FormToFindTeamService } from "../../services/FormToFindService/findTeam"
 import { useState } from "react";
+import PopupModal from "../models/popup";
 
 const FormToFindTeamComponent = () => {
 const { toast } = useToast()
+const [isModalShown, setIsModalShown] = useState(false);
+const [modalContent, setModalContent] = useState({ title: '', body: '' });
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -58,8 +61,23 @@ const formSchema = z.object({
 
   async function onSubmit(values) {
     const response = await FormToFindTeamService.findTeam(values);
-
     if(response.success){
+      setModalContent({
+        title: 'Your Matches',
+        body: response.data.data.map((match, index) => (
+          console.log(match),
+          <div key={index}>
+            <h2>Team Name: {match.team.teamName}</h2>
+            <p>Team Description: {match.team.teamDescription}</p>
+            <p>Team Type: {match.team.teamType}</p>
+            <p>Recommended Skills: {match.team.skills}</p>
+            <p>Match Percentage: {match.matchPercentage > 90 ? 'Great Match': 'Good Match'}</p>
+          </div>
+        ))
+      });
+      setIsModalShown(true);
+      console.log(isModalShown);
+      console.log(modalContent);
       toast({
         variant: `success`,
         title: "Success",
@@ -297,12 +315,18 @@ const formSchema = z.object({
             </FormItem>
           )}
         />
-
-    <div className="col-span-full flex justify-start space-x-4 mt-4">
-      <Button type="submit">Submit</Button>
-      <button onClick={Clear} className="btn-secondary">Clear</button>
-    </div>
+      <div className="col-span-full flex justify-start space-x-4 mt-4">
+        <Button type="submit">Submit</Button>
+        <button onClick={Clear} >Clear</button>
+      </div>
       </form>
+
+      <PopupModal
+        isShown={isModalShown}
+        title={modalContent.title}
+        body={modalContent.body}
+        onClose={() => setIsModalShown(false)}
+      />
     </Form>
   );
 }

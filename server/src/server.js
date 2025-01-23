@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const findTeamRoutes = require('./routes/findTeam/findTeam');
 const createTeamRoutes = require('./routes/createTeam/createTeam');
+const matchUserToTeamRoutes = require('./routes/matchUserToTeam');
+const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
 const rateLimit = require('express-rate-limit');
 
 app.use(cors({
@@ -29,6 +31,12 @@ app.use('/findTeam', findTeamRoutes);
 
 //create team routes
 app.use('/createTeam', createTeamRoutes);
+
+//Match the user to the team.
+app.use('/matchTheUser', matchUserToTeamRoutes); 
+
+//Match the team to the user.
+app.use('/matchTeamToUser', matchTeamToUserRoutes);
 
 app.listen(PORT, ()=> {
     console.log(`server running`);
