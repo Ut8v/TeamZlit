@@ -1,6 +1,8 @@
 import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 
+
+
 export class FormToCreateTeamService {
   static async createTeam(formData) {
     try {
