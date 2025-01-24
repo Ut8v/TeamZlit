@@ -66,18 +66,28 @@ const formSchema = z.object({
         title: 'Your Matches',
         body: response.data.data.map((match, index) => (
           console.log(match),
-          <div key={index}>
-            <h2>Team Name: {match.team.teamName}</h2>
-            <p>Team Description: {match.team.teamDescription}</p>
-            <p>Team Type: {match.team.teamType}</p>
-            <p>Recommended Skills: {match.team.skills}</p>
-            <p>Match Percentage: {match.matchPercentage > 90 ? 'Great Match': 'Good Match'}</p>
+          <div key={index} className="card mb-3 shadow-sm">
+          <div className="card-body">
+            <h2 className="card-title text-primary">Team Name: {match.team.teamName}</h2>
+            <p className="card-text">
+              <strong>Team Description:</strong> {match.team.teamDescription}
+            </p>
+            <p className="card-text">
+              <strong>Team Type:</strong> {match.team.teamType}
+            </p>
+            <p className="card-text">
+              <strong>Recommended Skills:</strong> {match.team.skills.join(', ')}
+            </p>
+            <p className={`card-text fw-bold ${match.matchPercentage > 90 ? 'text-success' : match.matchPercentage >= 70 ? 'text-primary' : 'text-danger'}`}>
+              Match Percentage: {match.matchPercentage > 90 ? 'Great Match' : match.matchPercentage >= 70 ?  'Good Match' : 'Possible Match'}
+            </p>
           </div>
+        </div>
         ))
       });
+
       setIsModalShown(true);
-      console.log(isModalShown);
-      console.log(modalContent);
+      
       toast({
         variant: `success`,
         title: "Success",
