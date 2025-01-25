@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
-
+import dotenv from 'dotenv';
+dotenv.config();
 test.describe('Form to Create Team', () => {
   test('should submit the form successfully', async ({ page }) => {
     // Navigate to the page where the form is hosted
-    await page.goto('http://localhost:3000'); // Replace with your app's URL
+    await page.goto(process.env.PAGE_URL);
 
     // Fill out the form fields
     await page.fill('input[placeholder="Capstone Team"]', 'Dream Team');
@@ -27,7 +28,7 @@ test.describe('Form to Create Team', () => {
 
   test('should show validation errors for missing fields', async ({ page }) => {
     // Navigate to the page where the form is hosted
-    await page.goto('http://localhost:3000'); // Replace with your app's URL
+    await page.goto(process.env.PAGE_URL); 
 
     // Attempt to submit without filling the form
     await page.click('button[type="submit"]');
