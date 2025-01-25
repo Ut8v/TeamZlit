@@ -19,9 +19,12 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { Checkbox } from "./checkbox";
 import { FormToFindTeamService } from "../../services/FormToFindService/findTeam"
 import { useState } from "react";
+import PopupModal from "../models/popup";
 
 const FormToFindTeamComponent = () => {
 const { toast } = useToast()
+const [isModalShown, setIsModalShown] = useState(false);
+const [modalContent, setModalContent] = useState({ title: '', body: '' });
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -58,8 +61,33 @@ const formSchema = z.object({
 
   async function onSubmit(values) {
     const response = await FormToFindTeamService.findTeam(values);
-
     if(response.success){
+      setModalContent({
+        title: 'Your Matches',
+        body: response.data.data.map((match, index) => (
+          console.log(match),
+          <div key={index} className="card mb-3 shadow-sm">
+          <div className="card-body">
+            <h2 className="card-title text-primary">Team Name: {match.team.teamName}</h2>
+            <p className="card-text">
+              <strong>Team Description:</strong> {match.team.teamDescription}
+            </p>
+            <p className="card-text">
+              <strong>Team Type:</strong> {match.team.teamType}
+            </p>
+            <p className="card-text">
+              <strong>Recommended Skills:</strong> {match.team.skills.join(', ')}
+            </p>
+            <p className={`card-text fw-bold ${match.matchPercentage > 90 ? 'text-success' : match.matchPercentage >= 70 ? 'text-primary' : 'text-danger'}`}>
+              Match Percentage: {match.matchPercentage > 90 ? 'Great Match' : match.matchPercentage >= 70 ?  'Good Match' : 'Possible Match'}
+            </p>
+          </div>
+        </div>
+        ))
+      });
+
+      setIsModalShown(true);
+      
       toast({
         variant: `success`,
         title: "Success",
@@ -297,12 +325,18 @@ const formSchema = z.object({
             </FormItem>
           )}
         />
-
-    <div className="col-span-full flex justify-start space-x-4 mt-4">
-      <Button type="submit">Submit</Button>
-      <button onClick={Clear} className="btn-secondary">Clear</button>
-    </div>
+      <div className="col-span-full flex justify-start space-x-4 mt-4">
+        <Button type="submit">Submit</Button>
+        <button onClick={Clear} >Clear</button>
+      </div>
       </form>
+
+      <PopupModal
+        isShown={isModalShown}
+        title={modalContent.title}
+        body={modalContent.body}
+        onClose={() => setIsModalShown(false)}
+      />
     </Form>
   );
 }
