@@ -9,10 +9,24 @@ import FormToCreateTeamComponent from './components/ui/formToCreateTeam';
 import FormToCreateUserComponent from './components/ui/formToCreateUser';
 import ProfileBar from './components/ProfileBar'; 
 import { Toaster } from "@/components/ui/toaster"
-
-import './App.css';
+import React, {useEffect, useState} from 'react'
+import SignUp from './pages/SignUp'
+import Login from './pages/Login'
 
 function App() {
+  const [token, setToken] = useState(false)
+
+  if(token){
+    sessionStorage.setItem('token',JSON.stringify(token))
+  }
+
+  useEffect(() => {
+    if(sessionStorage.getItem('item')){
+      let data = JSON.parse(sessionStorage.getItem('token'))
+      setToken(data)
+    }
+  }, [])
+
   return (
     <BrowserRouter>
     <div className="app-container">
@@ -24,11 +38,13 @@ function App() {
       {/* Main page content */}
       <div className="page-content">
           <Routes>
-            <Route path="/" element={<Home />} />
             <Route path="/page1" element={<Page1 />} />
             <Route path="/findTeam" element={<FormToFindTeamComponent />} />
             <Route path="/createTeam" element={<FormToCreateTeamComponent />} />
             <Route path="/createUser" element={<FormToCreateUserComponent />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path={'/'} element={<Login setToken={setToken} />} />
+            {token?<Route path={'/home'} element={<Home token={token} />} />:""}
           </Routes>
       </div>
 
