@@ -3,6 +3,15 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+
+
+const timeSlots = {
+  Morning: { icon: "🌅", label: "Morning (5 AM - 12 PM)" },
+  Afternoon: { icon: "☀️", label: "Afternoon (12 PM - 5 PM)" },
+  Evening: { icon: "🌆", label: "Evening (5 PM - 9 PM)" },
+  Night: { icon: "🌙", label: "Night (9 PM - 4 AM)" },
+};
 
 const GroupPage = () => {
   // Sample data; this would be dynamically fetched
@@ -18,6 +27,15 @@ const GroupPage = () => {
     skills: ["C#", "Unity Engine", "Pixel Art", "Game Physics", "AI Behavior Scripting", "Multiplayer Networking", "Boss Design"],
     visibility: "Public",
     notes: "A challenging 2D Souls-like game with fluid combat, deep lore, and a dark, atmospheric world. Players must master precise dodging, parrying, and stamina management to defeat powerful foes.",
+    schedule: {
+      Monday: ["Afternoon", "Evening"],
+      Tuesday: ["Morning", "Night"],
+      Wednesday: ["Evening"],
+      Thursday: ["Afternoon"],
+      Friday: ["Morning", "Evening"],
+      Saturday: ["Night"],
+      Sunday: [],
+    },
   };
 
   const handleRequestRole = (role) => {
@@ -55,6 +73,37 @@ const GroupPage = () => {
                   ) : (
                     <span className="text-sm italic">Filled</span>
                   )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Schedule</h2>
+            <div className="mt-2 grid grid-cols-7 gap-2 text-center">
+              {Object.entries(team.schedule).map(([day, times]) => (
+                <div key={day} className="p-2 border rounded-lg shadow-sm">
+                  <p className="font-medium text-gray-700">{day.slice(0, 3)}</p>
+                  <div className="flex flex-wrap justify-center gap-1 mt-1">
+                    {times.length > 0 ? (
+                      times.map((time) => (
+                        <TooltipProvider>
+                          <Tooltip key={time}>
+                            <TooltipTrigger asChild>
+                              <span className="cursor-pointer text-lg">{timeSlots[time].icon}</span>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="bg-gray-900 text-white text-xs p-2 rounded-md">
+                              {timeSlots[time].label}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      ))
+                    ) : (
+                      <p className="text-xs text-gray-400 italic">-</p>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
