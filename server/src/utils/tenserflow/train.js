@@ -1,4 +1,22 @@
-const tf = require('@tensorflow/tfjs-node');
+/*temporary fix for tensorflow*/
+require('dotenv').config();
+
+if (process.env.ENVIRONMENT !== 'production') {
+const os = require('os');
+const platform = os.platform();
+let tf;
+if (platform === 'darwin') {
+    console.log("Running on macOS");
+    tf = require('@tensorflow/tfjs-node');
+} else if (platform === 'win32') {
+    console.log("Running on Windows");
+    tf = require('@tensorflow/tfjs');
+} else {
+    throw new Error("Unsupported OS");
+}
+}
+
+//tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 const path = require('path');
 
