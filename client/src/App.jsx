@@ -7,7 +7,8 @@ import Page1 from './pages/Page1';
 import FormToFindTeamComponent from './components/ui/formToFindTeam';
 import FormToCreateTeamComponent from './components/ui/formToCreateTeam';
 import ProfileBar from './components/ProfileBar'; 
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+import TeamPage from './pages/teamPage'
 
 import './App.css';
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/page1" element={<Page1 />} />
             <Route path="/findTeam" element={<FormToFindTeamComponent />} />
             <Route path="/createTeam" element={<FormToCreateTeamComponent />} />
+            <Route path="/teamPage"   element={<TeamPage />} />
           </Routes>
       </div>
 
