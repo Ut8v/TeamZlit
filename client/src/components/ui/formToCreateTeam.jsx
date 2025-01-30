@@ -19,7 +19,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -27,10 +26,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { FormToCreateTeamService } from "../../services/FormToCreateService/createTeam"
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast"
+import PopupModal from "../models/popup";
 
 const FormToCreateTeamComponent = () => {
-
-const [responseText, setResponseText ] = useState();
 
 const { toast } = useToast()
 
@@ -62,13 +60,35 @@ const formSchema = z.object({
       additionalNotes: "",
     },
   });
+
+  const [isModalShown, setIsModalShown] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', body: '' });
   
   async function onSubmit(values) {
-    const response = await FormToCreateTeamService.createTeam(values);
-    console.log(response, `response txt`)
-    setResponseText(response.message);
-
+    const response = await FormToCreateTeamService.createTeam(values); 
     if(response.success){
+      setModalContent({
+        title: 'Your Matches',
+        body: response.data.data.map((match, index) => (
+          <div key={index} className="card mb-3">
+          <div className="card-body">
+            <h2 className="card-title">{match.user.username}</h2>
+            <p className="card-text"><strong>Role:</strong> {match.user.role}</p>
+            <p className="card-text"><strong>Experience Level:</strong> {match.user.experienceLevel}</p>
+            <p className="card-text"><strong>Availability:</strong> {match.user.availability}</p>
+            <p className="card-text"><strong>Skills:</strong> {match.user.skills.join(', ')}</p>
+            <p className="card-text"><strong>Email:</strong> <a href={`mailto:${match.user.email}`}>{match.user.email}</a></p>
+            <p className="card-text"><strong>Portfolio:</strong> <a href={match.user.portfolio} target="_blank" rel="noopener noreferrer">{match.user.portfolio}</a></p>
+            <p className="card-text"><strong>Additional Notes:</strong> {match.user.additionalNotes}</p>
+            <p className={`card-text ${match.matchPercentage > 90 ? 'text-success' : match.matchPercentage >= 70 ? 'text-primary' : 'text-danger'}`}>
+              <strong>Match Percentage:</strong> {match.matchPercentage > 90 ? 'Great Match' : match.matchPercentage >= 70 ? `Good Match` : 'Possible Match'}
+            </p>
+          </div>
+        </div>
+        ))
+      });
+      
+      setIsModalShown(true);
       toast({
         variant: `success`,
         title: "Success",
@@ -252,6 +272,13 @@ const formSchema = z.object({
     <Button type="submit">Submit</Button>
     <button onClick={Clear} style={{ marginLeft: '20px' }}>Clear</button>
   </form>
+
+      <PopupModal
+        isShown={isModalShown}
+        title={modalContent.title}
+        body={modalContent.body}
+        onClose={() => setIsModalShown(false)}
+      />
   </Form>
   );
 }
