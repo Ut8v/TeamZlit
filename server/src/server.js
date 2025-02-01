@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const findTeamRoutes = require('./routes/findTeam/findTeam');
 const createTeamRoutes = require('./routes/createTeam/createTeam');
+const matchUserToTeamRoutes = require('./routes/matchUserToTeam');
+const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
 const rateLimit = require('express-rate-limit');
 
 app.use(cors({
@@ -24,14 +26,20 @@ app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//find Team routes 
+//find Team routes      //todo add permission checker middleware
 app.use('/findTeam', findTeamRoutes);
 
-//create team routes
+//create team routes   //todo add permission checker middleware
 app.use('/createTeam', createTeamRoutes);
 
+//Match the user to the team.   //todo add permission checker middleware
+app.use('/matchTheUser', matchUserToTeamRoutes); 
+
+//Match the team to the user.  //todo add permission checker middleware
+app.use('/matchTeamToUser', matchTeamToUserRoutes);
+
 app.listen(PORT, ()=> {
-    console.log(`server running`);
+    console.log(`server running on port ${PORT}`);
 });
 
 module.exports = app;
