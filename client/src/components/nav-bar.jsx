@@ -1,11 +1,44 @@
 import { Navbar, Nav } from "react-bootstrap"
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from 'react'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+const baseUrl = import.meta.env.VITE_BASE
+const signupUrl = baseUrl + 'signup'
 
 const NavigationBar = () => {
+
+  async function getToken() {
+      const { data: { user } } = await supabase.auth.getUser()   
+      return user
+    }
+  
+    const user = getToken()
+    console.log(user)
+  
+    const [token, setToken] = useState(false)
+  
+    if(token){
+      sessionStorage.setItem('token',JSON.stringify(token))
+    }
+  
+    useEffect(() => {
+      if(sessionStorage.getItem('item')){
+        let data = JSON.parse(sessionStorage.getItem('token'))
+        setToken(data)
+      }
+    }, [])
+  
+    let navigate = useNavigate()
+
   const currentUrl = window.location.href;
 
-  if(currentUrl === 'http://localhost:5173/' || currentUrl === 'http://localhost:5173/signup') {
+  if(currentUrl === baseUrl || currentUrl === signupUrl) {
     return null
   } else {
     return(

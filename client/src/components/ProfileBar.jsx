@@ -8,6 +8,9 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+const baseUrl = import.meta.env.VITE_BASE
+const signupUrl = baseUrl + 'signup'
+
 const ProfileBar = () => {
 
   async function getToken() {
@@ -40,7 +43,7 @@ const ProfileBar = () => {
 
 const currentUrl = window.location.href;
 
-if(currentUrl === 'http://localhost:5173/' || currentUrl === 'http://localhost:5173/signup') {
+if(currentUrl === baseUrl || currentUrl === signupUrl) {
   return null
 } else {
   return (
