@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@radix-ui/react-tooltip": "^1.1.7",
     "dotenv": "^16.4.5"
   }
 }
