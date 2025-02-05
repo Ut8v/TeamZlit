@@ -8,6 +8,7 @@ const findTeamRoutes = require('./routes/findTeam/findTeam');
 const createTeamRoutes = require('./routes/createTeam/createTeam');
 const matchUserToTeamRoutes = require('./routes/matchUserToTeam');
 const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
+const indexTeamRoutes = require('./routes/indexTeam/indexTeam');
 const rateLimit = require('express-rate-limit');
 
 app.use(cors({
@@ -37,6 +38,8 @@ app.use('/matchTheUser', matchUserToTeamRoutes);
 
 //Match the team to the user.  //todo add permission checker middleware
 app.use('/matchTeamToUser', matchTeamToUserRoutes);
+
+app.use('/indexTeam', indexTeamRoutes);
 
 app.listen(PORT, ()=> {
     console.log(`server running on port ${PORT}`);

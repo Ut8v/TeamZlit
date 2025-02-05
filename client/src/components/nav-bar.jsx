@@ -14,6 +14,9 @@ const NavigationBar = () => {
         <Link to="/" className="nav-link">Home</Link>
       </li>
       <li className="list-group-item">
+        <Link to="/teamIndex" className="nav-link">Team Index</Link>
+      </li>
+      <li className="list-group-item">
         <Link to="/profile" className="nav-link">Profile</Link>
       </li>
       <li className="list-group-item">
@@ -23,7 +26,7 @@ const NavigationBar = () => {
         <Link to="/createTeam" className="nav-link">Create Team</Link>
       </li>
       <li className="list-group-item">
-        <Link to="/teamPage" className="nav-link">Create Team</Link>
+        <Link to="/teamPage" className="nav-link">Team Page (In Dev)</Link>
       </li>
     </ul>
   </Nav>
