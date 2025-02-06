@@ -25,9 +25,6 @@ const NavigationBar = () => {
       <li className="list-group-item">
         <Link to="/createTeam" className="nav-link">Create Team</Link>
       </li>
-      <li className="list-group-item">
-        <Link to="/teamPage" className="nav-link">Team Page (In Dev)</Link>
-      </li>
     </ul>
   </Nav>
 </Navbar>
