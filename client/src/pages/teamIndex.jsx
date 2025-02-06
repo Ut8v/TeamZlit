@@ -6,9 +6,11 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { TeamIndexService } from '@/services/TeamIndexService';
+import { useNavigate } from 'react-router-dom';
 
 const TeamIndex = () => {
   const [teams, setTeams] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -27,14 +29,14 @@ const TeamIndex = () => {
     fetchTeams();
   }, []);
 
-  const handleCardClick = (teamId) => {
-    console.log("Clicked on team ID:", teamId);
+  const handleViewDetails = (teamId) => {
+    navigate(`/teamPage/${teamId}`); // Navigate to team page with ID
   };
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {teams.map((team) => (
-        <Card key={team.id} className="cursor-pointer" onClick={() => handleCardClick(team.id)}>
+        <Card key={team.id} className="cursor-pointer">
           <CardHeader>
             <CardTitle>{team.teamName}</CardTitle>
             <TooltipProvider>
@@ -56,7 +58,7 @@ const TeamIndex = () => {
               <span>Visibility: {team.visibility}</span>
             </div>
             <div className="mt-4">
-              <Button variant="outline" fullWidth>
+              <Button variant="outline" fullWidth onClick={() => handleViewDetails(team.id)}>
                 View Details
               </Button>
             </div>

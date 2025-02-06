@@ -16,6 +16,31 @@ class TeamIndexService {
             };
         }
     }
+
+    static async getTeamById(teamId) {
+        try {
+            const team = await prisma.createTeam.findUnique({
+                where: { id: Number(teamId) }
+            });
+            
+            if (!team) {
+                return {
+                    success: false,
+                    error: "Team not found"
+                };
+            }
+
+            return {
+                success: true,
+                data: team
+            };
+        } catch(error) {
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
 }
 
 module.exports = TeamIndexService;

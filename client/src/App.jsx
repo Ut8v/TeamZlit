@@ -30,7 +30,7 @@ function App() {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/findTeam" element={<FormToFindTeamComponent />} />
             <Route path="/createTeam" element={<FormToCreateTeamComponent />} />
-            <Route path="/teamPage"   element={<TeamPage />} />
+            <Route path="/teamPage/:id"   element={<TeamPage />} />
             <Route path="/teamIndex" element={<TeamIndex />} />
           </Routes>
       </div>
