@@ -27,11 +27,11 @@ function App() {
       <div className="page-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<UserProfile />} />
             <Route path="/findTeam" element={<FormToFindTeamComponent />} />
             <Route path="/createTeam" element={<FormToCreateTeamComponent />} />
             <Route path="/teamPage/:id"   element={<TeamPage />} />
             <Route path="/teamIndex" element={<TeamIndex />} />
+            <Route path="/profile" element={<UserProfile />} />
           </Routes>
       </div>
 
