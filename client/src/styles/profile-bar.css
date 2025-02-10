@@ -26,19 +26,46 @@
     font-size: 1.2rem;
     color: white;
     text-align: center;
+    margin-bottom: 15px;
 }
 
+/* Profile Button */
+.profile-button {
+    padding: 10px 15px;
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    border-radius: 5px;
+    margin-top: auto;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.profile-button:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+}
+
+/* Logout Button */
 .logout-button {
     margin-top: auto;
-    padding: 10px;
+    padding: 10px 15px;
     background-color: #ff4d4d;
     color: white;
     border: none;
     cursor: pointer;
     width: 100%;
     text-align: center;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .logout-button:hover {
     background-color: #ff1a1a;
+    transform: scale(1.05);
 }

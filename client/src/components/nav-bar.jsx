@@ -42,18 +42,28 @@ const NavigationBar = () => {
     return null
   } else {
     return(
-        <Navbar className="navbar-container d-flex flex-column align-items-start">
-        <Navbar.Brand>
-          <img src={logo} alt="Logo" className="d-inline-block align-top logo-pic" />
-        </Navbar.Brand>
-        <Nav className="nav-bar">
-            <Link to="/Home" className="nav-link">Home</Link>
-            <Link to="/page1" className="nav-link">Page 1</Link>
-            <Link to="/findTeam" className="nav-link">Find Team</Link>
-            <Link to="/createTeam" className="nav-link">Create Team</Link>
-            <Link to="/createUser" className="nav-link">Create User</Link>
-        </Nav>
-      </Navbar>
+<Navbar className="navbar-container d-flex flex-column align-items-start">
+  <Navbar.Brand>
+    <img src={logo} alt="Logo" className="d-inline-block align-top logo-pic" />
+  </Navbar.Brand>
+  <Nav className="nav-bar">
+    <ul className="list-group">
+      <li className="list-group-item">
+        <Link to="/" className="nav-link">Home</Link>
+      </li>
+      <li className="list-group-item">
+        <Link to="/findTeam" className="nav-link">Find Team</Link>
+      </li>
+      <li className="list-group-item">
+        <Link to="/createTeam" className="nav-link">Create Team</Link>
+      </li>
+      <li className="list-group-item">
+        <Link to="/teamIndex" className="nav-link">Browse Teams</Link>
+      </li>
+    </ul>
+  </Nav>
+</Navbar>
+
     )
   }
 }

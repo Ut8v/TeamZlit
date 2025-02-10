@@ -1,11 +1,12 @@
-.app-container {
+
+/* .app-container {
   display: flex;
   flex-direction: row; 
   height: 100vh;
-}
+} */
 
 /* Navigation bar on the left */
-.navigation-bar {
+/* .navigation-bar {
   width: 250px;
   background-color: #0c2d48;
   color: white;
@@ -17,10 +18,10 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
-}
+} */
 
 /* Profile bar on the right */
-.profile-bar {
+/* .profile-bar {
   width: 250px;
   background-color: #0c2d48;
   color: white;
@@ -32,14 +33,14 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
-}
+} */
 
 /* Main content between the two bars */
 .page-content {
-  margin-left: 250px; /* Leave space for navigation bar */
-  margin-right: 250px; /* Leave space for profile bar */
+  margin-left: 250px;
+  margin-right: 250px;
   padding: 20px;
-  width: calc(100% - 500px); /* Account for both sidebars */
+  width: calc(100% - 500px);
   overflow-y: auto;
 }
 
