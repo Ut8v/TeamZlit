@@ -49,7 +49,7 @@ const NavigationBar = () => {
   <Nav className="nav-bar">
     <ul className="list-group">
       <li className="list-group-item">
-        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/home" className="nav-link">Home</Link>
       </li>
       <li className="list-group-item">
         <Link to="/findTeam" className="nav-link">Find Team</Link>
