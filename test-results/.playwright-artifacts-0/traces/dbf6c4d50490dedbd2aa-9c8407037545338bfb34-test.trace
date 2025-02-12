@@ -1,0 +1,34 @@
+{"version":7,"type":"context-options","origin":"testRunner","browserName":"","options":{},"platform":"win32","wallTime":1739062429519,"monotonicTime":350.894,"sdkLanguage":"javascript"}
+{"type":"before","callId":"hook@1","startTime":353.427,"class":"Test","method":"hook","apiName":"Before Hooks","params":{},"stack":[]}
+{"type":"before","callId":"fixture@2","parentId":"hook@1","startTime":357.659,"class":"Test","method":"fixture","apiName":"fixture: browser","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@3","parentId":"fixture@2","startTime":359.125,"class":"Test","method":"pw:api","apiName":"browserType.launch","params":{"handleSIGINT":"false","headless":"true","tracesDir":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\test-results\\.playwright-artifacts-0\\traces","ignoreDefaultArgs":"undefined","ignoreAllDefaultArgs":"false","env":"undefined"},"stack":[]}
+{"type":"after","callId":"pw:api@3","endTime":402.874,"attachments":[]}
+{"type":"after","callId":"fixture@2","endTime":403.033,"attachments":[]}
+{"type":"before","callId":"fixture@4","parentId":"hook@1","startTime":403.616,"class":"Test","method":"fixture","apiName":"fixture: context","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@5","parentId":"fixture@4","startTime":404.919,"class":"Test","method":"pw:api","apiName":"browser.newContext","params":{"acceptDownloads":"accept","bypassCSP":"false","colorScheme":"light","hasTouch":"false","ignoreHTTPSErrors":"false","isMobile":"false","javaScriptEnabled":"true","locale":"en-US","offline":"false","viewport":"Object","serviceWorkers":"allow","noDefaultViewport":"false","extraHTTPHeaders":"undefined","storageState":"undefined","recordHar":"undefined","reducedMotion":"undefined","forcedColors":"undefined","clientCertificates":"undefined"},"stack":[]}
+{"type":"after","callId":"pw:api@5","endTime":408.845,"attachments":[]}
+{"type":"after","callId":"fixture@4","endTime":413.103,"attachments":[]}
+{"type":"before","callId":"fixture@6","parentId":"hook@1","startTime":413.381,"class":"Test","method":"fixture","apiName":"fixture: page","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@7","parentId":"fixture@6","startTime":414.152,"class":"Test","method":"pw:api","apiName":"browserContext.newPage","params":{},"stack":[]}
+{"type":"after","callId":"pw:api@7","endTime":483.458,"attachments":[]}
+{"type":"after","callId":"fixture@6","endTime":483.586,"attachments":[]}
+{"type":"after","callId":"hook@1","endTime":483.623,"attachments":[]}
+{"type":"before","callId":"pw:api@8","startTime":484.794,"class":"Test","method":"pw:api","apiName":"page.goto","params":{"url":"https://teamzlitdev.onrender.com/","waitUntil":"domcontentloaded","timeout":"60000"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":5,"column":14}]}
+{"type":"after","callId":"pw:api@8","endTime":3697.942,"attachments":[]}
+{"type":"before","callId":"pw:api@9","startTime":3699.027,"class":"Test","method":"pw:api","apiName":"locator.waitFor","params":{"selector":"text=Find a Team","strict":"true","omitReturnValue":"true","state":"visible","timeout":"10000"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":8,"column":24}]}
+{"type":"after","callId":"pw:api@9","endTime":3713.407,"attachments":[]}
+{"type":"before","callId":"pw:api@10","startTime":3714.084,"class":"Test","method":"pw:api","apiName":"locator.click","params":{"selector":"text=Find a Team","strict":"true"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":9,"column":24}]}
+{"type":"after","callId":"pw:api@10","endTime":3786.693,"attachments":[]}
+{"type":"before","callId":"expect@11","startTime":3788.075,"class":"Test","method":"expect","apiName":"expect.toHaveURL","params":{"expected":"https://teamzlitdev.onrender.com/findTeam"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":11,"column":22}]}
+{"type":"after","callId":"expect@11","endTime":3796.676,"attachments":[]}
+{"type":"before","callId":"pw:api@12","startTime":3797.41,"class":"Test","method":"pw:api","apiName":"page.waitForSelector","params":{"selector":"input[name=\"username\"]","timeout":"10000"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":14,"column":14}]}
+{"type":"after","callId":"pw:api@12","endTime":3806.834,"attachments":[]}
+{"type":"before","callId":"pw:api@13","startTime":3807.527,"class":"Test","method":"pw:api","apiName":"page.fill","params":{"selector":"input[name=\"username\"]","value":"Josh.Test"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":15,"column":14}]}
+{"type":"after","callId":"pw:api@13","endTime":3822.3,"attachments":[]}
+{"type":"before","callId":"pw:api@14","startTime":3822.872,"class":"Test","method":"pw:api","apiName":"page.waitForSelector","params":{"selector":"input[name=\"email\"]","timeout":"10000"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":18,"column":14}]}
+{"type":"after","callId":"pw:api@14","endTime":3827.674,"attachments":[]}
+{"type":"before","callId":"pw:api@15","startTime":3828.225,"class":"Test","method":"pw:api","apiName":"page.fill","params":{"selector":"input[name=\"email\"]","value":"JoshTest@gmail.com"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":19,"column":14}]}
+{"type":"after","callId":"pw:api@15","endTime":3840.902,"attachments":[]}
+{"type":"before","callId":"pw:api@16","startTime":3841.568,"class":"Test","method":"pw:api","apiName":"locator.click","params":{"selector":"button:has-text(\"Select a role\")","strict":"true"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":23,"column":26}]}
+{"type":"after","callId":"pw:api@16","endTime":3886.374,"attachments":[]}
+{"type":"before","callId":"pw:api@17","startTime":3887.138,"class":"Test","method":"pw:api","apiName":"locator.waitFor","params":{"selector":"[data-value=\"\"]","strict":"true","omitReturnValue":"true","state":"visible","timeout":"5000"},"stack":[{"file":"C:\\Users\\joshh\\OneDrive\\Documents\\TeamZLit\\TeamZlit\\Tests-Josh\\example.spec.js","line":27,"column":25}]}
