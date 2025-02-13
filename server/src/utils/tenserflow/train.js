@@ -16,7 +16,10 @@ if (platform === 'darwin') {
 }
 }
 
-//tf = require('@tensorflow/tfjs-node');
+if (process.env.ENVIRONMENT === 'production') {
+    tf = require('@tensorflow/tfjs-node');
+}
+
 const fs = require('fs');
 const path = require('path');
 
