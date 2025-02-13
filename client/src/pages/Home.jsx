@@ -3,13 +3,15 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Users, UserPlus, Search } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from '../auth/authContext';
 
 const Home = () => {
+    const {userName} = useAuth();
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
             <Card className="w-full max-w-md shadow-lg p-6">
                 <CardHeader>
-                    <CardTitle className="text-2xl font-bold text-center">Welcome to TeamZlit</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-center">Welcome to TeamZlit {userName}</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                     <p className="text-gray-600 mb-6">Find or create teams that match your interests.</p>

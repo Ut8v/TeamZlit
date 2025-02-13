@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/lib/axios/axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export class TeamIndexService {

@@ -11,6 +11,7 @@ const matchUserToTeamRoutes = require('./routes/matchUserToTeam');
 const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
 const indexTeamRoutes = require('./routes/indexTeam/indexTeam');
 const rateLimit = require('express-rate-limit');
+const authenticateUser = require('./authMiddleware/authMiddleware');
 
 app.use(cors({
     origin: process.env.URL, 
@@ -29,20 +30,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //find Team routes      //todo add permission checker middleware
-app.use('/findTeam', findTeamRoutes);
+app.use('/findTeam', authenticateUser, findTeamRoutes);
 
 //create team routes   //todo add permission checker middleware
-app.use('/createTeam', createTeamRoutes);
+app.use('/createTeam', authenticateUser, createTeamRoutes);
 
 //create user routes
-app.use('/createUser', createUserRoutes);
+app.use('/createUser', authenticateUser, createUserRoutes);
 //Match the user to the team.   //todo add permission checker middleware
-app.use('/matchTheUser', matchUserToTeamRoutes); 
+app.use('/matchTheUser', authenticateUser, matchUserToTeamRoutes); 
 
 //Match the team to the user.  //todo add permission checker middleware
-app.use('/matchTeamToUser', matchTeamToUserRoutes);
+app.use('/matchTeamToUser', authenticateUser, matchTeamToUserRoutes);
 
-app.use('/indexTeam', indexTeamRoutes);
+app.use('/indexTeam', authenticateUser, indexTeamRoutes);
 
 app.listen(PORT, ()=> {
     console.log(`server running on port ${PORT}`);

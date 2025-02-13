@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import {Link} from 'react-router-dom'
 import '../styles/signup.css';
+import { useAuth } from '../auth/authContext'
 import { createClient } from '@supabase/supabase-js'
+import { useNavigate } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast"
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const SignUp = () => {
-
+  const { login } = useAuth(); 
+  const navigate = useNavigate();
+  const { toast } = useToast()
   const [formData,setFormData] = useState({
     username:'',email:'',password:''
   })
@@ -37,11 +42,25 @@ const SignUp = () => {
           }
         }
       )
-      if (error) throw error
-      //alert('Check your email for verification link')
 
+      const isLoggedIn = await login(data);
+
+      if (isLoggedIn) {
+          navigate("/home");
+      } 
+      else {
+          toast({
+              variant: "destructive",
+              title: "signup failed",
+              description: error.message,
+            })
+      }
     } catch(error) {
-        alert(error)
+        toast({
+          variant: "destructive",
+          title: "signup failed",
+          description: error.message,
+        })
     }  
   }
 
