@@ -1,0 +1,29 @@
+input[name=username], input[name=email], input[name=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+button[type=submit] {
+    background-color: #039cca;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+
+.login {
+    background-color: #f1f1f1;
+    text-align: center;
+}
+
+.signup {
+    background-color: #f1f1f1;
+    text-align: center;
+}

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const findTeamRoutes = require('./routes/findTeam/findTeam');
 const createTeamRoutes = require('./routes/createTeam/createTeam');
+const createUserRoutes = require('./routes/createUser/createUser');
 const matchUserToTeamRoutes = require('./routes/matchUserToTeam');
 const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
 const indexTeamRoutes = require('./routes/indexTeam/indexTeam');
@@ -33,6 +34,8 @@ app.use('/findTeam', findTeamRoutes);
 //create team routes   //todo add permission checker middleware
 app.use('/createTeam', createTeamRoutes);
 
+//create user routes
+app.use('/createUser', createUserRoutes);
 //Match the user to the team.   //todo add permission checker middleware
 app.use('/matchTheUser', matchUserToTeamRoutes); 
 
