@@ -1,8 +1,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,296 +19,269 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { FormToCreateTeamService } from "../../services/FormToCreateService/createTeam"
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast"
+import PopupModal from "../models/popup";
 
+const FormToCreateTeamComponent = () => {
+
+const { toast } = useToast()
 
 const formSchema = z.object({
+  email: z.string().email("Invalid email address."),
   teamName: z.string().min(3, { message: "Team Name must be at least 3 characters.", }),
   teamDescription: z.string().min(2, { message: "Team Description must be at least 2 characters.", }),
-  roles: z.array(
-    z.object({
-      role: z.string().nonempty("Please select a role"),
-      numberOfPeople: z
-        .number()
-        .min(1, { message: "Must be at least 1 person" })
-        .int("Must be a whole number"),
-    })
-  ).min(1, { message: "At least one role is required." })
-   .refine(roles => roles.reduce((acc, curr) => acc + curr.numberOfPeople, 0) > 2, {
-     message: "Total number of people in all roles must be greater than two."
-   }),
-  date: z.object({
-    from: z.date(),
-    to: z.date(),
+  teamType: z.string().min(1, { message: "Team Type is required." }),
+  roles: z.string().min(2, { message: "Roles must be at least 2 characters.", }),
+  skills: z.array(z.string()).min(1, {
+    message: "Select at least one skill.",
   }),
   teamVisibility: z.enum(["private", "public"], {
     required_error: "You need to select a visibility."
   }),
-  skills: z.array(z.string()).min(1, {
-    message: "Select at least one skill.",
-  }),
   additionalNotes: z.string().optional(),
 });
 
-export function FormToCreateTeam() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      email: "",
       teamName: "",
       teamDescription: "",
-      roles: [{ role: "", numberOfPeople: 1 }],
+      teamType: "",
+      roles: "",
       skills: [],
+      teamVisibility: "",
       additionalNotes: "",
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "roles",
-  });
-
-  function onSubmit(values) {
-    console.log(values);
+  const [isModalShown, setIsModalShown] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', body: '' });
+  
+  async function onSubmit(values) {
+    const response = await FormToCreateTeamService.createTeam(values); 
+    if(response.success){
+      setModalContent({
+        title: 'Your Matches',
+        body: response.data.data.map((match, index) => (
+          <div key={index} className="card mb-3">
+          <div className="card-body">
+            <h2 className="card-title">{match.user.username}</h2>
+            <p className="card-text"><strong>Role:</strong> {match.user.role}</p>
+            <p className="card-text"><strong>Experience Level:</strong> {match.user.experienceLevel}</p>
+            <p className="card-text"><strong>Availability:</strong> {match.user.availability}</p>
+            <p className="card-text"><strong>Skills:</strong> {match.user.skills.join(', ')}</p>
+            <p className="card-text"><strong>Email:</strong> <a href={`mailto:${match.user.email}`}>{match.user.email}</a></p>
+            <p className="card-text"><strong>Portfolio:</strong> <a href={match.user.portfolio} target="_blank" rel="noopener noreferrer">{match.user.portfolio}</a></p>
+            <p className="card-text"><strong>Additional Notes:</strong> {match.user.additionalNotes}</p>
+            <p className={`card-text ${match.matchPercentage > 90 ? 'text-success' : match.matchPercentage >= 70 ? 'text-primary' : 'text-danger'}`}>
+              <strong>Match Percentage:</strong> {match.matchPercentage > 90 ? 'Great Match' : match.matchPercentage >= 70 ? `Good Match` : 'Possible Match'}
+            </p>
+          </div>
+        </div>
+        ))
+      });
+      
+      setIsModalShown(true);
+      toast({
+        variant: `success`,
+        title: "Success",
+        description: "Form submitted successfully.",
+      })
+       form.reset();
+    }else {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: `${response.message}`,
+      })
+    }
   }
+
+  const Clear = () => {
+    form.reset();
+ }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="teamName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Team Name</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="Capstone Team" {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="teamDescription"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Team Description</FormLabel>
-              <FormControl>
-                <Textarea 
-                  placeholder="A team to develop a web application" {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="teamType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Team Type</FormLabel>
-              <FormControl>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a team type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="developmentteam">Development Team</SelectItem>
-                    <SelectItem value="researchgroup">Research Group</SelectItem>
-                    <SelectItem value="studygroup">Study Group</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-
-        {fields.map((field, index) => (
-          <FormItem key={field.id} className="flex items-center space-x-4">
-            <FormField
-              control={form.control}
-              name={`roles.${index}.role`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Roles Required</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-[360px]">
-                        <SelectValue placeholder="Select Role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Roles</SelectLabel>
-                          <SelectItem value="Developer">Developer</SelectItem>
-                          <SelectItem value="Designer">Designer</SelectItem>
-                          <SelectItem value="Manager">Manager</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name={`roles.${index}.count`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      min="1"
-                      placeholder="How many?"
-                      {...field}
-                      className="w-[125px]"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button
-              type="button"
-              onClick={() => remove(index)}
-              className="bg-red-500"
-            >
-              Remove
-            </Button>
+  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+    
+    {/* Row 1: Email and Team Name */}
+    <div className="flex space-x-4">
+      <FormField
+        control={form.control}
+        name="teamName"
+        render={({ field }) => (
+          <FormItem className="w-1/2">
+            <FormLabel>Team Name</FormLabel>
+            <FormControl>
+              <Input placeholder="Capstone Team" {...field} />
+            </FormControl>
+            <FormMessage />
           </FormItem>
-        ))}
+        )}
+      />
 
-        <Button
-          type="button"
-          onClick={() => append({ role: "", count: 1 })}
-          className="mt-2"
-        >
-          Add Role
-        </Button>
+      <FormField
+        control={form.control}
+        name="teamType"
+        render={({ field }) => (
+          <FormItem className="w-1/2">
+            <FormLabel>Team Type</FormLabel>
+            <FormControl>
+            <Select {...field} onValueChange={field.onChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a team type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="developmentteam">Development Team</SelectItem>
+                  <SelectItem value="researchgroup">Research Group</SelectItem>
+                  <SelectItem value="studygroup">Study Group</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-        <FormField
-          control={form.control}
-          name="skillsRequired"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Skills Required</FormLabel>
-              <FormControl>
-                <div className="space-y-2 w-[360px]">
-                  {[
-                      "JavaScript",
-                      "UI Design",
-                      "Project Management",
-                      "Python",
-                      "React",
-                      "Node.js",
-                      "TypeScript",
-                      "Data Analysis",
-                      "SQL",
-                      "Machine Learning",
-                      "HTML/CSS",
-                      "Docker",
-                      "AWS",
-                      "Figma",
-                      "Git",
-                      "Agile Methodologies",
-                      "Java",
-                      "C#",
-                      "Redux",
-                      "Firebase",
-                      "MongoDB",
-                      "Cybersecurity",
-                      "Mobile Development",
-                      "Testing/QA",
-                      "API Development"
-                    ].map(skill => (<div key={skill} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={skill}
-                      checked={field.value?.includes(skill)}
-                      onCheckedChange={(checked) => {
-                        const selectedSkills = field.value || [];
-                        if (checked) {
-                          field.onChange([...selectedSkills, skill]);
-                        } else {
-                          field.onChange(selectedSkills.filter(s => s !== skill));
-                        }
-                      }}
-                    />
-                    <label htmlFor={skill} className="text-sm">{skill}</label>
-                  </div>
-                ))}
-              </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <FormField
+        control={form.control}
+        name="teamVisibility"
+        render={({ field }) => (
+          <FormItem className="w-1/2">
+            <FormLabel>Team Visibility</FormLabel>
+            <FormControl>
+              <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex space-x-3">
+                <RadioGroupItem value="private" /> Private
+                <RadioGroupItem value="public" /> Public
+              </RadioGroup>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
 
-        <FormField
-          control={form.control}
-          name="teamVisibility"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Team Visibility</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="private" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Private
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="public" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Public
-                    </FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    {/* Full-width Row: Team Description */}
+    <FormField
+      control={form.control}
+      name="teamDescription"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Team Description</FormLabel>
+          <FormControl>
+            <Textarea placeholder="A team to develop a web application" {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
-        <FormField
-          control={form.control}
-          name="additionalNotes"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Additional Notes</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter any additional notes" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    {/* Full-width Row: Roles */}
+    <FormField
+      control={form.control}
+      name="roles"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Roles</FormLabel>
+          <FormControl>
+            <Input placeholder="Roles go here" {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    {/* Row for Skills (5 checkboxes per row) */}
+    <FormField
+      control={form.control}
+      name="skills"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Skills Required</FormLabel>
+          <FormControl>
+            <div className="grid grid-cols-5 gap-2">
+              {[
+                "JavaScript", "UI Design", "Project Management", "Python", "React",
+                "Node.js", "TypeScript", "Data Analysis", "SQL", "Machine Learning",
+                "HTML/CSS", "Docker", "AWS", "Figma", "Git",
+                "Agile Methodologies", "Java", "C#", "Redux", "Firebase",
+                "MongoDB", "Cybersecurity", "Mobile Development", "Testing/QA", "API Development"
+              ].map(skill => (
+                <div key={skill} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={skill}
+                    checked={field.value?.includes(skill)}
+                    onCheckedChange={(checked) => {
+                      const selectedSkills = field.value || [];
+                      if (checked) {
+                        field.onChange([...selectedSkills, skill]);
+                      } else {
+                        field.onChange(selectedSkills.filter(s => s !== skill));
+                      }
+                    }}
+                  />
+                  <label htmlFor={skill} className="text-sm">{skill}</label>
+                </div>
+              ))}
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+
+    {/* Full-width Row: Additional Notes */}
+    <FormField
+      control={form.control}
+      name="additionalNotes"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Additional Notes</FormLabel>
+          <FormControl>
+            <Textarea placeholder="Enter any additional notes" {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+
+      <FormField
+        control={form.control}
+        name="email"
+        render={({ field }) => (
+          <FormItem className="w-1/2">
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input placeholder="Enter your email" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+    <Button type="submit">Submit</Button>
+    <button onClick={Clear} style={{ marginLeft: '20px' }}>Clear</button>
+  </form>
+
+      <PopupModal
+        isShown={isModalShown}
+        title={modalContent.title}
+        body={modalContent.body}
+        onClose={() => setIsModalShown(false)}
+      />
+  </Form>
   );
 }
+
+
+export default FormToCreateTeamComponent;
