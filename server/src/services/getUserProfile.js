@@ -17,6 +17,7 @@ class GetUserProfile {
                     bio: true,
                 }
             });
+            console.log(`user info`, userInfo); //server logs
             return { success: true, data: userInfo };
         } catch (error) {
             console.error("Error fetching user profile:", error);
