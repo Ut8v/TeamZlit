@@ -31,8 +31,13 @@ function App() {
       {/* Main page content */}
       <div className="page-content">
           <Routes>
+            {!token ? 
+            <>
             <Route path="/signup" element={<SignUp />} />
             <Route path={'/'} element={<Login />} />
+            </>
+            : <Route path='*' element={<Navigate to='/home' />} />
+        }
             {token ?
             <>
             <Route path="/findTeam" element={<FormToFindTeamComponent />} />
