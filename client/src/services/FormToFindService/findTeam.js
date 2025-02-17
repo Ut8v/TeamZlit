@@ -1,13 +1,11 @@
-import axios from "axios";
-const apiUrl = import.meta.env.VITE_API_URL;
-
+import axios from "@/lib/axios/axios";
 export class FormToFindTeamService {
   static async findTeam(formData) {
     try {
 
       const response = await axios({
         method: 'post',
-        url: `${apiUrl}/findTeam`,
+        url: `/findTeam`,
         data: {
           formData,
         },
@@ -17,7 +15,7 @@ export class FormToFindTeamService {
         try{
           const response = await axios({
             method: 'post',
-            url: `${apiUrl}/matchTheUser`,
+            url: `/matchTheUser`,
             data: {
               formData,
             },
