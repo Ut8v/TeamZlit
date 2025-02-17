@@ -3,8 +3,10 @@ import "../styles/userProfile.css";
 import GetUserProfile from "@/services/getUserProfile/getUserprofile";
 import userProfileIcon from "../assets/user-profile-icon.jpg";
 import { useToast } from "@/hooks/use-toast"
+import Loader from "@/components/loading/loader";
 const UserProfile = () => {
     const [user, setUser] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
     const [editedUser, setEditedUser] = useState({
         bio: "",
     });
@@ -15,6 +17,7 @@ const UserProfile = () => {
         const fetchUserProfile = async () => {
             const userProfile = await GetUserProfile.getUserProfile();
             setUser(userProfile.data);
+            setIsLoading(false);
         };
         fetchUserProfile();
     },[refresh]);
@@ -65,9 +68,14 @@ const UserProfile = () => {
                 </>
             ) : (
                 <>
+                  {isLoading ? 
+                    <Loader /> :
+                    <>
                     <h2 className="profile-name-user">{user.username}</h2>
                     <p className="profile-info-user"><strong>Email:</strong> {user.email}</p>
                     <p className="profile-info-user"><strong>Bio:</strong> {user.bio ? user.bio : ''}</p>
+                    </>
+                  }
                 </>
             )}
 
