@@ -16,11 +16,12 @@ model posts {
 }
 
 model users {
-  id         BigInt    @id @default(autoincrement())
+  id         BigInt    @id @unique @default(autoincrement())
   username   String    @unique
   email      String    @unique
-  password   String
   created_at DateTime? @default(now()) @db.Timestamptz(6)
+  bio        String?
+  user_id    String?   @db.Uuid
   posts      posts?
 }
 
@@ -63,4 +64,157 @@ model rolesRequired {
   teamId     BigInt?
   role       String?
   quantity   Int?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ExperienceLevels {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model InterestAreas {
+  id       Int    @id @default(autoincrement())
+  interest String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Roles {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Skills {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Statuses {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TeamRoles {
+  id         Int       @id @default(autoincrement())
+  team_id    Int
+  role_id    Int
+  is_filled  Boolean
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TeamSkills {
+  id       Int @id @default(autoincrement())
+  team_id  Int
+  skill_id Int
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TeamTypes {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TeamUsers {
+  id           BigInt    @id @default(autoincrement())
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+  team_role_id Int
+  user_id      Int
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Teams {
+  id               Int       @id @default(autoincrement())
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  user_id          Int
+  team_type_id     Int
+  visibility_id    Int
+  status_id        Int
+  additional_notes String?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TimeSlots {
+  id         Int      @id @default(autoincrement())
+  name       String
+  start_time DateTime @db.Timetz(6)
+  end_time   DateTime @db.Timetz(6)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserAvailabilities {
+  id           Int @id @default(autoincrement())
+  user_id      Int
+  weekday_id   Int
+  time_slot_id Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserInterestAreas {
+  id               Int  @id @default(autoincrement())
+  user_id          Int
+  interest_area_id Int?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserPreferredTeamTypes {
+  id           Int @id @default(autoincrement())
+  user_id      Int
+  team_type_id Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserRoles {
+  id      Int @id @default(autoincrement())
+  user_id Int
+  role_id Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserSkills {
+  id       Int @id @default(autoincrement())
+  user_id  Int
+  skill_id Int
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UsersLookingForTeams {
+  id                  Int       @id @default(autoincrement())
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+  user_id             Int
+  experience_level_id Int
+  status_id           Int
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Visibilities {
+  id    Int    @id @default(autoincrement())
+  Level String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Weekdays {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model createPost {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  posts      Json?    @db.Json
 }

@@ -6,16 +6,17 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const findTeamRoutes = require('./routes/findTeam/findTeam');
 const createTeamRoutes = require('./routes/createTeam/createTeam');
-const createUserRoutes = require('./routes/createUser/createUser');
+//const createUserRoutes = require('./routes/createUser/createUser');
 const matchUserToTeamRoutes = require('./routes/matchUserToTeam');
 const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
 const indexTeamRoutes = require('./routes/indexTeam/indexTeam');
+const getUserProfileRoutes = require('./routes/getUserProfile/getUserProfile');
 const rateLimit = require('express-rate-limit');
 const authenticateUser = require('./authMiddleware/authMiddleware');
 
 app.use(cors({
     origin: process.env.URL, 
-    methods: ['GET', 'POST'],
+    methods: ['GET','PUT', 'POST', 'DELETE'],
     credentials: true
 }));
 
@@ -29,21 +30,24 @@ app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//find Team routes      //todo add permission checker middleware
+//find Team routes  
 app.use('/findTeam', authenticateUser, findTeamRoutes);
 
-//create team routes   //todo add permission checker middleware
+//create team routes  
 app.use('/createTeam', authenticateUser, createTeamRoutes);
 
 //create user routes
-app.use('/createUser', authenticateUser, createUserRoutes);
-//Match the user to the team.   //todo add permission checker middleware
+//app.use('/createUser', authenticateUser, createUserRoutes); [Depricated route, not used]
+
+//Match the user to the team.  
 app.use('/matchTheUser', authenticateUser, matchUserToTeamRoutes); 
 
-//Match the team to the user.  //todo add permission checker middleware
+//Match the team to the user. 
 app.use('/matchTeamToUser', authenticateUser, matchTeamToUserRoutes);
 
 app.use('/indexTeam', authenticateUser, indexTeamRoutes);
+
+app.use('/userProfile', authenticateUser, getUserProfileRoutes);
 
 app.listen(PORT, ()=> {
     console.log(`server running on port ${PORT}`);

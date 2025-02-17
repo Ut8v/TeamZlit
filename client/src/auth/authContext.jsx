@@ -12,8 +12,8 @@ export const AuthProvider = ({ children }) => {
         const storedUser = sessionStorage.getItem("user");
 
         if (storedToken && storedUser) {
-            setToken(JSON.parse(storedToken));
-            setUser(JSON.parse(storedUser)); 
+            setToken(storedToken);
+            setUser(storedUser.toString().replace(/"/g, "")); 
             setLoggedIn(true);
         }
     }, []);

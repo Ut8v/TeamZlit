@@ -13,55 +13,65 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const SignUp = () => {
   const { login } = useAuth(); 
   const navigate = useNavigate();
-  const { toast } = useToast()
-  const [formData,setFormData] = useState({
-    username:'',email:'',password:''
-  })
+  const { toast } = useToast();
+  
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
 
-  function handleChange(event){
-    setFormData((prevFormData)=>{
-      return{
-        ...prevFormData,
-        [event.target.name]:event.target.value
-      }
-    })
+  function handleChange(event) {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [event.target.name]: event.target.value
+    }));
   }
 
-  async function handleSubmit(e){
-    e.preventDefault()
+  async function handleSubmit(e) {
+    e.preventDefault();
     
     try {
-      const { data, error } = await supabase.auth.signUp(
-        {
-          email: formData.email,
-          password: formData.password,
-          options: {
-            data: {
-              full_name: formData.username,
-            }
-          }
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: { full_name: formData.username }
         }
-      )
+      });
 
+      if (error) {
+        throw new Error(error.message);
+      }
       const isLoggedIn = await login(data);
 
-      if (isLoggedIn) {
-          navigate("/home");
-      } 
-      else {
-          toast({
-              variant: "destructive",
-              title: "signup failed",
-              description: error.message,
-            })
+      const { error: insertError } = await supabase
+        .from("users")
+        .insert([
+          {
+            user_id: data.user.id,  
+            username: formData.username,
+            email: formData.email
+          }
+        ]);
+
+      if (insertError) {
+        throw new Error(insertError.message);
       }
-    } catch(error) {
-        toast({
-          variant: "destructive",
-          title: "signup failed",
-          description: error.message,
-        })
-    }  
+
+      if (isLoggedIn) {
+        navigate("/home");
+      } else {
+        throw new Error("Login failed after sign-up");
+      }
+
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Signup failed",
+        description: error.message,
+      });
+    }
   }
 
   return (
