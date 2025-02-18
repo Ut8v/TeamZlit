@@ -1,10 +1,9 @@
 /*temporary fix for tensorflow*/
 require('dotenv').config();
-
+let tf;
 if (process.env.ENVIRONMENT !== 'production') {
 const os = require('os');
 const platform = os.platform();
-let tf;
 if (platform === 'darwin') {
     console.log("Running on macOS");
     tf = require('@tensorflow/tfjs-node');
