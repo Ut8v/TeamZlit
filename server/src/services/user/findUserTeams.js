@@ -15,6 +15,7 @@ class FindUserTeams {
             });
             return { success: true, data: userTeams };
         } catch(error){
+            console.log(error, `error getting user teams`);
             return {success: false, error: error.message};
         }
 
