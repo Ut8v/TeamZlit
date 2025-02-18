@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //find Team routes  
-app.use('/findTeam', authenticateUser, findTeamRoutes); //route to find teams
+app.use('/finduserTeams', authenticateUser, findTeamRoutes); //route to find teams
 
 //create team routes  
 app.use('/createTeam', authenticateUser, createTeamRoutes); //route to create teams

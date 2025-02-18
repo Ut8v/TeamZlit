@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model posts {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  posts      Json?    @db.Json
+  users      users    @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id         BigInt    @id @default(autoincrement())
+  username   String    @unique
+  email      String    @unique
+  password   String
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  posts      posts?
+}
+
+model lookingForTeam {
+  id                Int      @id @default(autoincrement())
+  username          String
+  email             String   @unique
+  skills            String[]
+  role              String
+  experienceLevel   String
+  availability      String
+  interestAreas     String?
+  portfolio         String?
+  preferredTeamType String
+  additionalNotes   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model createTeam {
+  id              Int      @id @default(autoincrement())
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  email           String?
+  teamName        String?
+  teamDescription String?
+  teamType        String?
+  roles           String?
+  skills          String[]
+  visibility      String?
+  additionalNotes String?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model rolesRequired {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  teamId     BigInt?
+  role       String?
+  quantity   Int?
+}
