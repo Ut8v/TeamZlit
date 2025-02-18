@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const FormToCreateTeamService = require('../../services/createTeam');
+const findUser = require('../../services/user');
 
 router.post('/', async (req, res)=> {
     const data = req.body;
-    const response = await FormToCreateTeamService.createTeam(data);
-
-    console.log(`responseeeeee`, response);
+    const token = req.headers.authorization;
+    const getUserId = await findUser.findUserID(token);
+    const response = await FormToCreateTeamService.createTeam(data, getUserId.user.id);
 
     if (response.success) {
         res.status(201).json({

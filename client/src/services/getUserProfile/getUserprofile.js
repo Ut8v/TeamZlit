@@ -17,5 +17,14 @@ class GetUserProfile{
             return { success: false, error: error.message };
         }
     }
+
+    static getUserTeams = async () => {
+        try {
+            const response = await axios.get('/userTeams');
+            return response.data;
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
 }
 export default GetUserProfile;

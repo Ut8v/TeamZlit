@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast"
+import { useAuth } from "@/auth/authContext";
 
 import {
   Form,
@@ -25,6 +26,7 @@ const FormToFindTeamComponent = () => {
 const { toast } = useToast()
 const [isModalShown, setIsModalShown] = useState(false);
 const [modalContent, setModalContent] = useState({ title: '', body: '' });
+const { userEmail, user } = useAuth();
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -46,8 +48,8 @@ const formSchema = z.object({
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      email: "",
+      username: user,
+      email: userEmail,
       skills: [],
       role: "",
       experienceLevel: "",
@@ -65,7 +67,6 @@ const formSchema = z.object({
       setModalContent({
         title: 'Your Matches',
         body: response.data.data.map((match, index) => (
-          console.log(match),
           <div key={index} className="card mb-3 shadow-sm">
           <div className="card-body">
             <h2 className="card-title text-primary">Team Name: {match.team.teamName}</h2>
@@ -121,7 +122,7 @@ const formSchema = z.object({
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your username" {...field} />
+              <Input {...field} defaultValue={field.value} readOnly />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -135,7 +136,7 @@ const formSchema = z.object({
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" {...field} />
+              <Input {...field} defaultValue={field.value} readOnly />
               </FormControl>
               <FormMessage />
             </FormItem>
