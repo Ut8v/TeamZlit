@@ -5,15 +5,19 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
+    const [userEmail, setUserEmail] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
         const storedToken = sessionStorage.getItem("token");
         const storedUser = sessionStorage.getItem("user");
+        const storedUserEmail = sessionStorage.getItem("userEmail");
 
-        if (storedToken && storedUser) {
+        if (storedToken && storedUser && storedUserEmail) {
+            setUserEmail(storedUserEmail.toString().replace(/"/g, ""));
             setToken(storedToken);
             setUser(storedUser.toString().replace(/"/g, "")); 
+
             setLoggedIn(true);
         }
     }, []);
@@ -25,13 +29,16 @@ export const AuthProvider = ({ children }) => {
 
         const fullName = userData.user.user_metadata.full_name;
         const tokenData = userData.session.access_token; 
+        const emailData = userData.user.user_metadata.email;
 
+        setUserEmail(emailData);
         setUser(fullName);
         setToken(tokenData);
         setLoggedIn(true);
 
         sessionStorage.setItem("user", JSON.stringify(fullName));
         sessionStorage.setItem("token", JSON.stringify(tokenData));
+        sessionStorage.setItem("userEmail", JSON.stringify(emailData));
 
         return true; 
     };
@@ -42,10 +49,11 @@ export const AuthProvider = ({ children }) => {
         setLoggedIn(false);
         sessionStorage.removeItem("user");
         sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userEmail");
     };
 
     return (
-        <AuthContext.Provider value={{ token, user, loggedIn, login, logout }}>
+        <AuthContext.Provider value={{ token, user, userEmail, loggedIn, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

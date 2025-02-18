@@ -11,6 +11,7 @@ const matchUserToTeamRoutes = require('./routes/matchUserToTeam');
 const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
 const indexTeamRoutes = require('./routes/indexTeam/indexTeam');
 const getUserProfileRoutes = require('./routes/getUserProfile/getUserProfile');
+const getUserTeamsRoutes = require('./routes/findUserTeams/findUserTeams');
 const rateLimit = require('express-rate-limit');
 const authenticateUser = require('./authMiddleware/authMiddleware');
 
@@ -31,23 +32,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //find Team routes  
-app.use('/findTeam', authenticateUser, findTeamRoutes);
+app.use('/findTeam', authenticateUser, findTeamRoutes); //route to find teams
 
 //create team routes  
-app.use('/createTeam', authenticateUser, createTeamRoutes);
+app.use('/createTeam', authenticateUser, createTeamRoutes); //route to create teams
 
 //create user routes
 //app.use('/createUser', authenticateUser, createUserRoutes); [Depricated route, not used]
 
 //Match the user to the team.  
-app.use('/matchTheUser', authenticateUser, matchUserToTeamRoutes); 
+app.use('/matchTheUser', authenticateUser, matchUserToTeamRoutes); //route to match user to team
 
 //Match the team to the user. 
-app.use('/matchTeamToUser', authenticateUser, matchTeamToUserRoutes);
+app.use('/matchTeamToUser', authenticateUser, matchTeamToUserRoutes); //route to match team to user
 
-app.use('/indexTeam', authenticateUser, indexTeamRoutes);
+app.use('/indexTeam', authenticateUser, indexTeamRoutes); //route to index teams browser
 
-app.use('/userProfile', authenticateUser, getUserProfileRoutes);
+app.use('/userProfile', authenticateUser, getUserProfileRoutes); //route to get user profile
+
+app.use('/userTeams', authenticateUser, getUserTeamsRoutes);//route to get user teams
 
 app.listen(PORT, ()=> {
     console.log(`server running on port ${PORT}`);

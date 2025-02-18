@@ -10,7 +10,7 @@ export class FormToCreateTeamService {
           formData,
         },
       });
-      console.log(response.status, 'response');
+
       if(response.status === 201){
         try{
           const response = await axios({

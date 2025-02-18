@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/auth/authContext";
 import {
   Form,
   FormControl,
@@ -31,6 +32,7 @@ import PopupModal from "../models/popup";
 const FormToCreateTeamComponent = () => {
 
 const { toast } = useToast()
+const { userEmail } = useAuth();
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address."),
@@ -50,7 +52,7 @@ const formSchema = z.object({
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: userEmail,
       teamName: "",
       teamDescription: "",
       teamType: "",
@@ -262,7 +264,7 @@ const formSchema = z.object({
           <FormItem className="w-1/2">
             <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input placeholder="Enter your email" {...field} />
+            <Input {...field} defaultValue={field.value} readOnly />
             </FormControl>
             <FormMessage />
           </FormItem>
