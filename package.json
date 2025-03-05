@@ -1,26 +1,25 @@
 {
   "name": "teamzlit",
   "version": "1.0.0",
-  "description": "A team maker app",
+  "description": "A team-maker app",
   "main": "server.js",
   "scripts": {
-    "start": "react-scripts start",
-  "build": "react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject",
-  "test:playwright": "playwright test"
+    "test": "npx playwright test"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@clerk/clerk-react": "^5.15.5",
+    "@radix-ui/react-tooltip": "^1.1.7",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.46.1",
+    "dotenv": "^16.4.5",
     "react-hook-form": "^7.54.2",
     "supabase": "^1.219.2",
-    "teamzlit": "file:",
-    "@radix-ui/react-tooltip": "^1.1.7",
-    "dotenv": "^16.4.5"
+    "teamzlit": "file:"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1"
   }
 }
