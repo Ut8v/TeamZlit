@@ -15,7 +15,7 @@ class ActiveFormCheck {
             }
         } catch (error) {
             console.log(`error`, error);
-            return { success: false, error: err.message };
+            return { success: false, error: error.message };
         }
     }
 
@@ -29,7 +29,7 @@ class ActiveFormCheck {
             return { success: true, data: activeForm };
         } catch (error) {
             console.log(`error`, error);
-            return { success: false, error: err.message };
+            return { success: false, error: error.message };
         }
     }
 
