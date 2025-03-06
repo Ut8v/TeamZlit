@@ -12,6 +12,9 @@ const matchTeamToUserRoutes = require('./routes/matchTeamToUser');
 const indexTeamRoutes = require('./routes/indexTeam/indexTeam');
 const getUserProfileRoutes = require('./routes/getUserProfile/getUserProfile');
 const getUserTeamsRoutes = require('./routes/findUserTeams/findUserTeams');
+const checkActiveFormRoutes = require('./routes/checkUserForms/checkUserForms');
+const formContentRoutes = require('./routes/formContent/getFormcontent');
+const myMatchedTeamsRoutes = require('./routes/myMatchedTeams/myMatchedTeams');
 const rateLimit = require('express-rate-limit');
 const authenticateUser = require('./authMiddleware/authMiddleware');
 
@@ -23,13 +26,19 @@ app.use(cors({
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 80, // limit each IP to 80 requests per windowMs
+    max: process.env.MAX_REQUESTS,
     message: "Too many requests, please try again later."
 });
 
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//middleware to log requests
+app.use((req, res, next) => {
+    console.log(`Received ${req.method} request at ${req.originalUrl}`);
+    next();
+});
 
 //find Team routes  
 app.use('/findTeam', authenticateUser, findTeamRoutes); //route to find teams
@@ -51,6 +60,12 @@ app.use('/indexTeam', authenticateUser, indexTeamRoutes); //route to index teams
 app.use('/userProfile', authenticateUser, getUserProfileRoutes); //route to get user profile
 
 app.use('/userTeams', authenticateUser, getUserTeamsRoutes);//route to get user teams
+
+app.use('/activeFormCheck', authenticateUser, checkActiveFormRoutes);//route to check active form
+
+app.use('/formContent', authenticateUser, formContentRoutes);//route to get form content
+
+app.use('/getMyMatchedTeams', authenticateUser, myMatchedTeamsRoutes);//route to get my matched teams);
 
 app.listen(PORT, ()=> {
     console.log(`server running on port ${PORT}`);

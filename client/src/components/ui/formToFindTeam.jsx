@@ -1,10 +1,10 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast"
 import { useAuth } from "@/auth/authContext";
+import { useEffect } from "react";
 
 import {
   Form,
@@ -27,6 +27,7 @@ const { toast } = useToast()
 const [isModalShown, setIsModalShown] = useState(false);
 const [modalContent, setModalContent] = useState({ title: '', body: '' });
 const { userEmail, user } = useAuth();
+const [hasActiveForm, setHasActiveForm] = useState(false);
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -108,6 +109,14 @@ const formSchema = z.object({
   const Clear = () => {
      form.reset();
   }
+ 
+  useEffect(() => {
+    async function checkActiveForm() {
+    const response = await FormToFindTeamService.activeFormCheck();
+    setHasActiveForm(response.data);
+    };
+    checkActiveForm();
+  }, []);
 
   return (
     <Form {...form}>
@@ -326,10 +335,13 @@ const formSchema = z.object({
             </FormItem>
           )}
         />
+      { hasActiveForm ?
+      <p>You already have an active form filled out.</p> :
       <div className="col-span-full flex justify-start space-x-4 mt-4">
         <Button type="submit">Submit</Button>
         <button onClick={Clear} >Clear</button>
       </div>
+      }
       </form>
 
       <PopupModal

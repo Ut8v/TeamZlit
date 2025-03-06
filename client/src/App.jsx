@@ -16,6 +16,7 @@ import { useAuth } from './auth/authContext';
 
 import './App.css';
 import UserProfile from './pages/userProfile';
+import MyForm from './pages/MyForm';
 
 function App() {
   const { token } = useAuth();
@@ -46,6 +47,7 @@ function App() {
             <Route path="/teamPage/:id"   element={<TeamPage />} />
             <Route path="/teamIndex" element={<TeamIndex />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/myForms" element={<MyForm />} />
             </>
             : <Route path='*' element={<Navigate to='/' />} />
             }

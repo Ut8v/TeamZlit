@@ -26,9 +26,16 @@ const ProfileBar = () => {
         </Link>
 
         <button className="logout-button" onClick={(handleLogout)}>Logout</button>
+        <hr/>
+        <div className="form-button">
+        <Link to="/myForms">
+          <button className="myform-button">My Form</button>
+        </Link>
+        </div>
       </div>
       }
     </div>
+    
   );
 };
 

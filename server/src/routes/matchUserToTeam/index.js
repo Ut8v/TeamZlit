@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const findUser = require('../../services/user');
 const FormToMatchUserToTeamService = require('../../services/formToMatchUserToTeamService');
 
 /*
@@ -9,7 +9,10 @@ This route is responsible for matching a user to a team.
 */
 router.post('/', async (req, res)=> {
     const data = req.body;
-    const response = await FormToMatchUserToTeamService.matchUserToTeam(data);
+    const token = req.headers.authorization;
+    const getUserId = await findUser.findUserID(token);
+    const response = await FormToMatchUserToTeamService.matchUserToTeam(data, getUserId.user
+    .id);
 
     console.log(`response`, response);
 
