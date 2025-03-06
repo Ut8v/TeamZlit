@@ -6,9 +6,10 @@ const matchMaker = require('../utils/tenserflow/train');
 // This service is responsible for matching a user to a team.
 class FormToMatchUserToTeamService {
 
-    static async matchUserToTeam(data){
+    static async matchUserToTeam(data, userID){
        const teams =  await prisma.createTeam.findMany({
         select: {
+            id: true,
             email: true,
             teamName: true,
             teamDescription: true,
@@ -18,6 +19,11 @@ class FormToMatchUserToTeamService {
             visibility: true,
             additionalNotes: true || [],
             //TODO: add more fields to select after form is completed.
+        },
+        where: {
+            user_id: {
+                not: userID
+            }
         }
        });
 
@@ -30,12 +36,26 @@ class FormToMatchUserToTeamService {
                     teamData: team.skills,
                 });
                 return {
+                    id: team.id,
                     team,
                     matchPercentage : matchPercentage * 100,
                 };
             })
-        );        
-         return { success: true, data: matchType.filter((match) => match.matchPercentage > 50) };
+        );      
+        const matches = matchType.filter((match) => match.matchPercentage > 50)  
+        
+        const addMatchedTeamsToUser = await Promise.all(
+            matches.map((match) =>
+                prisma.userMatchedTeams.create({
+                    data: {
+                        user_id: userID,
+                        team_id: match.id,
+                        match_percentage: match.matchPercentage,
+                    },
+                })
+            )
+        );
+         return { success: true, data: matches};
     }
 }
 

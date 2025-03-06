@@ -15,5 +15,7 @@ class findUser {
         }
         return data;
     }
+
+    
 }
 module.exports = findUser;

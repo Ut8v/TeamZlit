@@ -3,7 +3,7 @@ const { response } = require('express');
 const {prisma, Prisma} = require('../database/index');
 class FormToFindTeamService {
 
-    static async findTeam (data) {
+    static async findTeam (data, userId) {
         try{
             const lookingForTeam = await prisma.lookingForTeam.create({
                 data: {
@@ -17,6 +17,7 @@ class FormToFindTeamService {
                   portfolio: data.formData.portfolio,
                   preferredTeamType: data.formData.preferredTeamType,
                   additionalNotes: data.formData.additionalNotes,
+                  user_id: userId,
                 },
               })
               return { success: true, data: lookingForTeam };
@@ -34,6 +35,25 @@ class FormToFindTeamService {
             return {success: false, error: err.message};
         }
        
+    }
+
+    static async activeFormCheck(userId) {
+        try{
+            const activeForm = await prisma.lookingForTeam.findFirst({
+                where: {
+                    user_id: userId,
+                }
+            });
+            console.log(`activeForm`, activeForm);
+            if(activeForm){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(error){
+            console.log(`error`, error);
+            return {success: false, error: err.message};
+        }
     }
 }
 
