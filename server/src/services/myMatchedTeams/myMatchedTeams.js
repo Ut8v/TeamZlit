@@ -4,8 +4,9 @@ const {prisma, Prisma} = require('../../database/index');
 
 class MyMatches {
     static async myMatchedTeams(userId){
+
         try{
-            const matchedTeams = await prisma.UserMatchedTeams.findMany({
+            const matchedTeams = await prisma.userMatchedTeams.findMany({
                 where: {
                     user_id: userId
                 }
