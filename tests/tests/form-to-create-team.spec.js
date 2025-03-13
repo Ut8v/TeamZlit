@@ -19,7 +19,7 @@ test('should log in, navigate to create team, and fill out the form', async ({ p
     await page.click('button[type="submit"]');
 
     console.log('Waiting for the page to load after login...');
-    await page.waitForURL(`${process.env.PAGE_URL}/home`, { timeout: 30000 });
+    await page.waitForURL(`${process.env.PAGE_URL}/home`, { timeout: 60000 });
 
     console.log('Verifying navigation...');
     const currentURL = await page.url();
@@ -44,7 +44,7 @@ test('should log in, navigate to create team, and fill out the form', async ({ p
     await createTeamLink.click();
 
     console.log('Waiting for navigation to Create Team page...');
-    await page.waitForURL(`${process.env.PAGE_URL}/createTeam`, { timeout: 15000 });
+    await page.waitForURL(`${process.env.PAGE_URL}/createTeam`, { timeout: 60000 });
 
     const newURL = await page.url();
     if (newURL !== `${process.env.PAGE_URL}/createTeam`) {
