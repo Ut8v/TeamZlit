@@ -10,7 +10,6 @@ test('should log in, check navigation bar links, and verify expected navigation'
 
     console.log('Waiting for the page to fully load...');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(3000);
 
     // Step 2: Fill in login credentials
     console.log('Filling in login credentials...');
