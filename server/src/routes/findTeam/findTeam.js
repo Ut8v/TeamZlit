@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const FormToFindTeamService = require('../../services/findTeam');
-
+const findUser = require('../../services/user');
 router.post('/', async (req, res)=> {
     const data = req.body;
-    const response = await FormToFindTeamService.findTeam(data);
+    const token = req.headers.authorization;
+    const getUserId = await findUser.findUserID(token);
+    const response = await FormToFindTeamService.findTeam(data, getUserId.user.id);
 
     console.log(`response`, response);
 
@@ -20,5 +22,4 @@ router.post('/', async (req, res)=> {
         });
       }
 })
-
 module.exports = router;

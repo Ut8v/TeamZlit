@@ -42,4 +42,18 @@ export class FormToFindTeamService {
       }
     }
   }
+
+  static async activeFormCheck() {
+    try {
+      const response = await axios.get('/activeFormCheck');
+
+      return response;
+    }catch(error){
+      if(error.response){
+        return { success: false, message: error.response.data.message };
+      }
+    }
+
+  }
+
 }
