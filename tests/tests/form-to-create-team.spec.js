@@ -12,8 +12,8 @@ test('should log in, navigate to create team, and fill out the form', async ({ p
     await page.waitForTimeout(3000);
 
     console.log('Entering login credentials...');
-    await page.fill('input[name="email"]', 'julianandresmolina19@outlook.com');
-    await page.fill('input[name="password"]', 'Jumo24@!');
+    await page.fill('input[name="email"]', process.env.TEST_USER_EMAIL);
+    await page.fill('input[name="password"]', process.env.TEST_USER_PASSWORD);
 
     console.log('Submitting login form...');
     await page.click('button[type="submit"]');
