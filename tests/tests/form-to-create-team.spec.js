@@ -9,7 +9,6 @@ test('should log in, navigate to create team, and fill out the form', async ({ p
 
     console.log('Waiting for the page to fully load...');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(3000);
 
     console.log('Entering login credentials...');
     await page.fill('input[name="email"]', process.env.TEST_USER_EMAIL);
