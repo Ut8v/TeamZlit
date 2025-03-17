@@ -4,7 +4,7 @@ const TeamIndexService = require('../../services/TeamIndexService');
 
 router.get('/', async(req, res) => {
     try {
-        const response = await TeamIndexService.getTeams();
+        const response = await TeamIndexService.getTeams(req.headers.authorization);
         res.json(response);
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
