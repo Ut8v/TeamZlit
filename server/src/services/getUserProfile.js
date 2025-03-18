@@ -44,5 +44,24 @@ class GetUserProfile {
         }
     }
 
+    static getUserById = async (userId) => {
+        try {
+            const userInfo = await prisma.users.findUnique({
+                where: {
+                    id: Number(userId),
+                },
+                select: {
+                    email: true,
+                    username: true,
+                    bio: true,
+                }
+            });
+            return { success: true, data: userInfo };
+        } catch (error) {
+            console.error("Error fetching user by ID:", error);
+            return { success: false, error: error.message };
+        }
+    }
+
 }
 module.exports = GetUserProfile;

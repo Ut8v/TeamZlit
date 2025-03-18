@@ -29,7 +29,7 @@ class GetUserProfile{
 
     static getUserById = async (userId) => {
         try {
-            const response = await axios.get(`/userList/getUserById/${userId}`);
+            const response = await axios.get(`/userProfile/getUserById/${userId}`);
             return response.data;
         } catch (error) {
             return { success: false, error: error.message };

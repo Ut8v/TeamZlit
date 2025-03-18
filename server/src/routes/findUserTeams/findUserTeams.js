@@ -16,4 +16,14 @@ router.get('/', async (req, res) => {
     }
 }
 );
+
+router.get('/getUserTeamsById/:userId', async (req, res) => {
+    try {
+        const response = await FindUserTeamsService.getUserTeamsById(req.params.userId);
+        res.json(response);
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+}
+);
 module.exports = router;

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import "../styles/userProfile.css"; 
 import GetUserProfile from "@/services/getUserProfile/getUserprofile";
-import userProfileIcon from "../assets/user-profile-icon.jpg";
 import { useToast } from "@/hooks/use-toast"
 import Loader from "@/components/loading/loader";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const UserProfile = () => {
     const [user, setUser] = useState({});
@@ -61,7 +61,12 @@ const UserProfile = () => {
     return (
      <div className="user-profile bg-gray-100">
         <div className="profile-container">
-            <img src={userProfileIcon} alt="Profile" className="profile-pic" />
+        <Avatar className="w-16 h-16">
+                    <AvatarImage src={user.profilePic || ""} alt={user.username} />
+                    <AvatarFallback>
+                        {user.username ? user.username.charAt(0).toUpperCase() : "?"}
+                    </AvatarFallback>
+                </Avatar>
             
             {isEditing ? (
                 <>
