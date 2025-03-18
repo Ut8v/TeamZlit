@@ -26,5 +26,23 @@ class GetUserProfile{
             return { success: false, error: error.message };
         }
     }
+
+    static getUserById = async (userId) => {
+        try {
+            const response = await axios.get(`/userProfile/getUserById/${userId}`);
+            return response.data;
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
+
+    static getUserTeamsById = async (userId) => {
+        try {
+            const response = await axios.get(`/userTeams/getUserTeamsById/${userId}`);
+            return response.data;
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
 }
 export default GetUserProfile;

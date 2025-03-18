@@ -5,11 +5,16 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast"
+import { useNavigate } from "react-router-dom";
+import Loader from "@/components/loading/loader";
 
 const TeamPage = () => {
   const { id } = useParams();  // Extract the ID from the URL
   const [team, setTeam] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -29,8 +34,25 @@ const TeamPage = () => {
     fetchTeam();
   }, [id]);
 
+  const handleDeleteTeam = async () => {
+    const response = await TeamIndexService.deleteTeam(id);
+    if (response.success) {
+      toast({
+        title: "Team deleted successfully",
+        variant: "success",
+      });
+      navigate("/teamIndex");
+    } else {
+      toast({
+        title: "Error deleting team",
+        description: response.error,
+        variant: "destructive",
+      });
+    }
+  };
+
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!team) return <p>Loading team...</p>;
+  if (!team) return <Loader />;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -77,9 +99,17 @@ const TeamPage = () => {
           </div>
 
           <div className="mt-6 text-center">
-            <Button variant="default" className="px-4 py-2">
-              Join Team
-            </Button>
+            {
+              team.isMyTeam ? (
+                <Button className="px-4 py-2 btn btn-danger" onClick={handleDeleteTeam}>
+                  Delete Team
+                </Button>
+              ) : (
+                <Button variant="default" className="px-4 py-2">
+                  Join Team
+                </Button>
+              )
+            }
           </div>
         </CardContent>
       </Card>

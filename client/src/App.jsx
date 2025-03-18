@@ -12,11 +12,10 @@ import Login from './pages/Login'
 import TeamPage from './pages/teamPage'
 import TeamIndex from './pages/teamIndex'
 import { useAuth } from './auth/authContext';
-
-
-import './App.css';
 import UserProfile from './pages/userProfile';
 import MyForm from './pages/MyForm';
+import UserListPage from './pages/userList';
+import UserPage from './pages/userPage';
 
 function App() {
   const { token } = useAuth();
@@ -48,6 +47,8 @@ function App() {
             <Route path="/teamIndex" element={<TeamIndex />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/myForms" element={<MyForm />} />
+            <Route path="/userList" element={<UserListPage/>} />
+            <Route path="/userPage/:id" element={<UserPage />} />
             </>
             : <Route path='*' element={<Navigate to='/' />} />
             }

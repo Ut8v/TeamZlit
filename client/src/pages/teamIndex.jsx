@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -7,14 +6,17 @@ import { Button } from "@/components/ui/button";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { TeamIndexService } from '@/services/TeamIndexService';
 import { useNavigate } from 'react-router-dom';
+import Loader from '@/components/loading/loader';
 
 const TeamIndex = () => {
   const [teams, setTeams] = useState([]);
+  const [Loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeams = async () => {
       try {
+        setLoading(true);
         const response = await TeamIndexService.getTeams();
         if (Array.isArray(response.data.data)) {
           setTeams(response.data.data);
@@ -24,6 +26,7 @@ const TeamIndex = () => {
       } catch (error) {
         console.error("Error fetching teams:", error);
       }
+      setLoading(false);
     };
 
     fetchTeams();
@@ -32,6 +35,10 @@ const TeamIndex = () => {
   const handleViewDetails = (teamId) => {
     navigate(`/teamPage/${teamId}`); // Navigate to team page with ID
   };
+
+  if (Loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

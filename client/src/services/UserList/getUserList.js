@@ -1,12 +1,11 @@
 import axios from "@/lib/axios/axios";
 const apiUrl = import.meta.env.VITE_API_URL;
-
-export class TeamIndexService {
-    static async getTeams() {
+class UserList {
+    static async getUserList() {
         try {
             const response = await axios({
                 method: 'get',
-                url: `${apiUrl}/indexTeam`,
+                url: `${apiUrl}/userList`,
             });
 
             if(response.status == 200) {
@@ -28,13 +27,14 @@ export class TeamIndexService {
             return { success: false, message: 'Network error. Please try again later.' };
             }
         }
+
     }
 
-    static async getTeamById(teamId) {
+    static async getUserById(userId) {
         try {
             const response = await axios({
                 method: 'get',
-                url: `${apiUrl}/indexTeam/getTeamById/${teamId}`,
+                url: `${apiUrl}/userList/getUserById/${userId}`,
             });
 
             if(response.status == 200) {
@@ -57,33 +57,7 @@ export class TeamIndexService {
             }
         }
 
-    } 
-
-    static async deleteTeam(teamId) {
-        try {
-            const response = await axios({
-                method: 'delete',
-                url: `${apiUrl}/indexTeam/deleteTeam/${teamId}`,
-            });
-
-            if(response.status == 200) {
-                return { 
-                    success: true, 
-                    message: response.data.message, 
-                    data: response.data
-                };
-            } else {
-                return { 
-                    success: false, 
-                    message: response.data.message 
-                };
-            }
-        } catch (error) {
-            if (error.response) {
-            return { success: false, message: error.response.data.message };
-            } else {
-            return { success: false, message: 'Network error. Please try again later.' };
-            }
-        }
-    }   
+    }
 }
+
+export default UserList;

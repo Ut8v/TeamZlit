@@ -32,6 +32,11 @@ const ProfileBar = () => {
           <button className="myform-button">My Form</button>
         </Link>
         </div>
+        <div className="form-button">
+        <Link to="/userList">
+          <button className="myform-button">User List</button>
+        </Link>
+        </div>
       </div>
       }
     </div>

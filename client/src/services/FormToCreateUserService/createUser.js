@@ -3,8 +3,6 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export class FormToCreateUserService {
   static async createUser(formData) {
-    console.log(formData);
-    console.log(apiUrl);
     try {
       const response = await axios({
         method: 'post',
@@ -13,7 +11,6 @@ export class FormToCreateUserService {
           formData,
         },
       });
-      console.log(response, 'response');
       return { success: true, message: response.data.message, data: response.data };
     } catch (error) {
       if (error.response) {
