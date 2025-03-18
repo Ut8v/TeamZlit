@@ -6,7 +6,6 @@ class TeamIndexService {
     static async getTeams(token) {
         try {
             let userFromToken = await findUser.findUserID(token);
-            console.log(`userFromToken`, userFromToken);
             const teams = await prisma.createTeam.findMany(
                 {
                     where: {
@@ -24,7 +23,6 @@ class TeamIndexService {
                 data: teams
             };
         } catch(error) {
-            console.error("Error fetching teams:", error);
             return {
                 success: false,
                 error: error.message
@@ -32,11 +30,14 @@ class TeamIndexService {
         }
     }
 
-    static async getTeamById(teamId) {
+    static async getTeamById(teamId, token) {
         try {
+            let userFromToken = await findUser.findUserID(token);
             const team = await prisma.createTeam.findUnique({
                 where: { id: Number(teamId) }
             });
+
+            const myTeam = team.user_id === userFromToken.user.id;
             
             if (!team) {
                 return {
@@ -44,6 +45,24 @@ class TeamIndexService {
                     error: "Team not found"
                 };
             }
+
+            return {
+                success: true,
+                data: {...team, isMyTeam: myTeam}
+            };
+        } catch(error) {
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    static async deleteTeam(teamId) {
+        try {
+            const team = await prisma.createTeam.delete({
+                where: { id: Number(teamId) }
+            });
 
             return {
                 success: true,
