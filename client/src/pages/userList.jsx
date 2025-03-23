@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -27,51 +26,53 @@ const UserListPage = () => {
                 });
                 setUsers([]);
                 return;
-                
             }
             setLoading(false);
-        }
+        };
         fetchUsers();
-
     }, []);
 
     const handleUserDetails = (userId) => {
-        try{
+        try {
             navigate(`/userPage/${userId}`);
-        }
-        catch (error) {
+        } catch (error) {
             toast({
                 title: "Error navigating to user profile",
                 description: error.message,
                 variant: "destructive",
             });
         }
-    }
+    };
 
     if (loading) {
         return <Loader />;
     }
 
     return (
-        <><p className="text-bold">Users you may know</p><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-            {users.map((user) => (
-                <Card key={user.id} className="p-4">
-                    <CardHeader className="flex items-center gap-4">
-                        <Avatar className="w-12 h-12">
-                            <AvatarImage src={user.profilePic} alt={user.username} />
-                            <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <CardTitle>Name: {user.username}</CardTitle>
-                            <CardDescription>Bio: {user.bio ? user.bio : `Bio not availabe`}</CardDescription>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="mt-4">
-                        <Button variant="outline" onClick={() => handleUserDetails(user.id)}>View Details</Button>
-                    </CardContent>
-                </Card>
-            ))}
-        </div></>
+        <div className="max-w-6xl mx-auto p-6">
+            <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Users You May Know</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {users.map((user) => (
+                    <Card key={user.id} className="shadow-lg hover:shadow-xl transition duration-300 rounded-2xl overflow-hidden cursor-pointer">
+                        <CardHeader className="flex flex-col items-center p-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white relative">
+                            <Avatar className="w-16 h-16 border-2 border-white shadow-md">
+                                <AvatarImage src={user.profilePic} alt={user.username} />
+                                <AvatarFallback className="bg-gray-700 text-white font-bold">{user.username.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <CardTitle className="mt-3 text-lg font-bold text-white">{user.username}</CardTitle>
+                            <CardDescription className="text-sm text-gray-200 mt-1 text-center px-4">
+                                {user.bio ? user.bio : "Bio not available"}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="p-6 flex justify-center">
+                            <Button variant="outline" className="w-full hover:bg-indigo-600 hover:text-white transition duration-300 font-semibold" onClick={() => handleUserDetails(user.id)}>
+                                View Details
+                            </Button>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+        </div>
     );
 };
 

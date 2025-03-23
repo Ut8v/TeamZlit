@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "@/components/loading/loader";
 
@@ -51,6 +51,15 @@ const TeamPage = () => {
     }
   };
 
+  const formatTeamType = (teamType) => {
+    const typeMap = {
+      developmentteam: "Development Team",
+      researchgroup: "Research Group",
+      studygroup: "Study Group"
+    };
+    return typeMap[teamType.toLowerCase()] || teamType;
+  };
+
   if (error) return <p className="text-red-500">{error}</p>;
   if (!team) return <Loader />;
 
@@ -79,7 +88,7 @@ const TeamPage = () => {
           {/* Display Team Type */}
           <div>
             <h3 className="text-xl font-semibold text-gray-700">Team Type</h3>
-            <p className="mt-1 text-gray-600">{team.teamType}</p>
+            <p className="mt-1 text-gray-600">{formatTeamType(team.teamType)}</p>
           </div>
 
           <Separator className="my-4" />
@@ -90,13 +99,15 @@ const TeamPage = () => {
             <p className="mt-1 text-gray-600">{team.roles}</p>
           </div>
 
-          <Separator className="my-4" />
-
-          {/* Display Additional Notes */}
-          <div>
-            <h3 className="text-xl font-semibold text-gray-700">Additional Notes</h3>
-            <p className="mt-1 text-gray-600">{team.additionalNotes}</p>
-          </div>
+          {team.additionalNotes && (
+            <>
+              <Separator className="my-4" />
+              <div>
+                <h3 className="text-xl font-semibold text-gray-700">Additional Notes</h3>
+                <p className="mt-1 text-gray-600">{team.additionalNotes}</p>
+              </div>
+            </>
+          )}
 
           <div className="mt-6 text-center">
             {
