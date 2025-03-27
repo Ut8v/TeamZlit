@@ -49,45 +49,44 @@ const TeamIndex = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800">Team Directory</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {teams.map((team) => (
-          <Card key={team.id} className="shadow-lg hover:shadow-xl transition duration-300 rounded-2xl overflow-hidden cursor-pointer">
-            <CardHeader className="bg-blue-600 text-white p-4">
-              <CardTitle className="text-xl font-bold">{team.teamName}</CardTitle>
-            </CardHeader>
-            <CardContent className="p-5">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Badge variant="outline" className="bg-blue-600 text-white px-3 py-1 rounded-full">
-                      {formatTeamType(team.teamType)}
-                    </Badge>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <span>{team.teamDescription}</span>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <p className="text-gray-700 text-sm mb-2 mt-3">{team.teamDescription}</p>
-              <Separator className="my-3" />
-              <div className="flex justify-between text-gray-600 text-sm">
-                <span><strong>Looking for:</strong> {team.roles}</span>
-              </div>
-              <div className="mt-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {teams.map((team) => (
+            <Card 
+              key={team.id} 
+              className="bg-[#2e5669] border-[#0f3445] shadow-lg"
+            >
+              <CardContent className="p-6 text-center">
+                <h2 className="text-2xl font-bold text-white mb-4">{team.teamName}</h2>
+                
+                <Badge 
+                  className="mb-4 bg-[#008780] text-white hover:bg-[#008780]/90"
+                >
+                  {formatTeamType(team.teamType)}
+                </Badge>
+
+                <p className="text-white/80 text-center mt-2 mb-4">
+                  {team.teamDescription || "Description not available"}
+                </p>
+
+                <Separator className="my-4 bg-white/20" />
+
+                <div className="text-white/80 mb-4">
+                  <strong>Looking for:</strong> {team.roles}
+                </div>
+
                 <Button 
-                  variant="outline" 
-                  fullWidth 
+                  className="w-full bg-[#008780] hover:bg-[#3fb182] transition-colors duration-300"
                   onClick={() => handleViewDetails(team.id)}
-                  className="bg-blue-600 text-white hover:bg-blue-700 transition duration-300 w-full py-2 rounded-lg">
+                >
                   View Details
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </CardContent>
     </div>
   );
 };
