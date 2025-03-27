@@ -1,10 +1,11 @@
-import  { useState } from 'react'
-import {Link} from 'react-router-dom'
-import '../styles/signup.css';
-import { useAuth } from '../auth/authContext'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { createClient } from '@supabase/supabase-js'
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/authContext'
 import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
@@ -75,37 +76,64 @@ const SignUp = () => {
   }
 
   return (
-    
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder='Username'
-          name='username'
-          onChange={handleChange}
-        />
-
-        <input
-          placeholder='Email'
-          name='email'
-          onChange={handleChange}
-        />
-
-        <input
-          placeholder='Password'
-          name='password'
-          type='password'
-          onChange={handleChange}
-        />
-
-        <button type='submit'>
-          Submit
-        </button>
-
-      </form>
-      <div className="login">Already have an account? <Link to='/'>Login</Link></div>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-[#0f3445] border-[#0f3445] shadow-2xl">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold text-white">Sign Up</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <Input
+                className="bg-[#0f3445] text-white border-white/30 focus:border-white/60 placeholder-white/50"
+                placeholder='Enter your username'
+                name='username'
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <Input
+                className="bg-[#0f3445] text-white border-white/30 focus:border-white/60 placeholder-white/50"
+                placeholder='Enter your email'
+                name='email'
+                type='email'
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <Input
+                className="bg-[#0f3445] text-white border-white/30 focus:border-white/60 placeholder-white/50"
+                placeholder='Enter your password'
+                name='password'
+                type='password'
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <Button 
+              type='submit' 
+              className="w-full bg-[#008780] hover:bg-[#3fb182] transition-colors duration-300"
+            >
+              Create Account
+            </Button>
+          </form>
+          <div className="text-center mt-6">
+            <p className="text-white/80">
+              Already have an account? {' '}
+              <Link 
+                to='/' 
+                className="text-white underline hover:text-white/70 transition-colors"
+              >
+                Login
+              </Link>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
-export default SignUp
-
+export default SignUp;

@@ -8,27 +8,36 @@ import { useAuth } from '../auth/authContext';
 const Home = () => {
     const {userName} = useAuth();
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-            <Card className="w-full max-w-md shadow-lg p-6">
-                <CardHeader>
-                    <CardTitle className="text-2xl font-bold text-center">Welcome to TeamZlit {userName}</CardTitle>
+        <div className="min-h-screen flex flex-col items-center justify-center p-4">
+            <Card className="w-full max-w-md bg-[#2e5669] border-[#0f3445] shadow-lg">
+                <CardHeader className="text-center">
+                    <CardTitle className="text-3xl font-bold text-white">
+                        Welcome to TeamZlit {userName}
+                    </CardTitle>
                 </CardHeader>
-                <CardContent className="text-center">
-                    <p className="text-gray-600 mb-6">Find or create teams that match your interests.</p>
-                    <Separator className="mb-6" />
+                <CardContent className="p-6 text-center">
+                    <p className="text-white/80 mb-6">Find or create teams that match your interests.</p>
+                    <Separator className="mb-6 bg-white/20" />
                     <div className="flex flex-col space-y-4">
                         <Link to="/findTeam">
-                            <Button className="w-full flex items-center gap-3 py-3 text-lg" variant="default">
+                            <Button 
+                                className="w-full flex items-center gap-3 py-3 text-lg bg-[#008780] hover:bg-[#3fb182] transition-colors duration-300" 
+                                variant="default"
+                            >
                                 <UserPlus className="w-6 h-6" /> Find a Team
                             </Button>
                         </Link>
                         <Link to="/createTeam">
-                            <Button className="w-full flex items-center gap-3 py-3 bg-green-600 hover:bg-green-700 text-white text-lg" variant="secondary">
+                            <Button 
+                                className="w-full flex items-center gap-3 py-3 text-lg bg-[#008780] hover:bg-[#3fb182] transition-colors duration-300" 
+                            >
                                 <Users className="w-6 h-6" /> Create a Team
                             </Button>
                         </Link>
                         <Link to="/teamIndex">
-                            <Button className="w-full flex items-center gap-3 py-3 text-lg" variant="outline">
+                            <Button 
+                                className="w-full flex items-center gap-3 py-3 text-lg bg-[#008780] hover:bg-[#3fb182] transition-colors duration-300" 
+                            >
                                 <Search className="w-6 h-6" /> View Existing Teams
                             </Button>
                         </Link>
