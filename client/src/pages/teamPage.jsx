@@ -63,6 +63,10 @@ const TeamPage = () => {
   if (error) return <p className="text-red-500">{error}</p>;
   if (!team) return <Loader />;
 
+  const handleJoinTeam = async () => {
+    console.log("Joining team...");
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <Card>
@@ -116,7 +120,7 @@ const TeamPage = () => {
                   Delete Team
                 </Button>
               ) : (
-                <Button variant="default" className="px-4 py-2">
+                <Button variant="default" className="px-4 py-2" onClick={handleJoinTeam}>
                   Join Team
                 </Button>
               )
