@@ -68,47 +68,50 @@ const TeamPage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center">{team.teamName}</CardTitle>
-          <p className="text-center text-lg text-gray-600 mt-2">{team.teamDescription}</p>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-4xl bg-[#2e5669] border-[#0f3445] shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold text-white">{team.teamName}</CardTitle>
+          <p className="text-center text-lg text-white/80 mt-2">{team.teamDescription}</p>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           {/* Display Skills */}
-          <div>
-            <h3 className="text-xl font-semibold text-gray-700">Skills</h3>
-            <div className="mt-2 flex flex-wrap gap-2">
+          <div className="mb-4">
+            <h3 className="text-xl font-semibold text-white mb-2">Skills</h3>
+            <div className="flex flex-wrap gap-2">
               {team.skills?.map((skill, index) => (
-                <Badge key={index} variant="outline" className="text-sm">
+                <Badge 
+                  key={index} 
+                  className="bg-[#008780] text-white hover:bg-[#008780]/90"
+                >
                   {skill}
                 </Badge>
               ))}
             </div>
           </div>
 
-          <Separator className="my-4" />
+          <Separator className="my-4 bg-white/20" />
 
           {/* Display Team Type */}
-          <div>
-            <h3 className="text-xl font-semibold text-gray-700">Team Type</h3>
-            <p className="mt-1 text-gray-600">{formatTeamType(team.teamType)}</p>
+          <div className="mb-4">
+            <h3 className="text-xl font-semibold text-white mb-2">Team Type</h3>
+            <p className="text-white/80">{formatTeamType(team.teamType)}</p>
           </div>
 
-          <Separator className="my-4" />
+          <Separator className="my-4 bg-white/20" />
 
           {/* Display Roles */}
-          <div>
-            <h3 className="text-xl font-semibold text-gray-700">Roles</h3>
-            <p className="mt-1 text-gray-600">{team.roles}</p>
+          <div className="mb-4">
+            <h3 className="text-xl font-semibold text-white mb-2">Roles</h3>
+            <p className="text-white/80">{team.roles}</p>
           </div>
 
           {team.additionalNotes && (
             <>
-              <Separator className="my-4" />
+              <Separator className="my-4 bg-white/20" />
               <div>
-                <h3 className="text-xl font-semibold text-gray-700">Additional Notes</h3>
-                <p className="mt-1 text-gray-600">{team.additionalNotes}</p>
+                <h3 className="text-xl font-semibold text-white mb-2">Additional Notes</h3>
+                <p className="text-white/80">{team.additionalNotes}</p>
               </div>
             </>
           )}
@@ -116,11 +119,16 @@ const TeamPage = () => {
           <div className="mt-6 text-center">
             {
               team.isMyTeam ? (
-                <Button className="px-4 py-2 btn btn-danger" onClick={handleDeleteTeam}>
+                <Button 
+                  className="w-full bg-red-600 hover:bg-red-700 transition-colors duration-300"
+                  onClick={handleDeleteTeam}
+                >
                   Delete Team
                 </Button>
               ) : (
-                <Button variant="default" className="px-4 py-2" onClick={handleJoinTeam}>
+                <Button 
+                  className="w-full bg-[#008780] hover:bg-white/90 transition-colors duration-300"
+                >
                   Join Team
                 </Button>
               )

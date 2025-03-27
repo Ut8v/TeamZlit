@@ -1,25 +1,28 @@
 .profile-bar-container {
     position: fixed;
     top: 0;
-    right: 0; /* Align the profile bar to the right */
+    right: 0;
     height: 100%;
     width: 250px;
-    background-color: #0f3445;
+    background-color: #2e5669;
     padding: 20px;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Adjust shadow for right alignment */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .profile-bar-content {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the profile content */
+    align-items: center;
+    height: 100%;
 }
 
 .profile-pic {
     height: 100px;
-    border: 2px solid red;
+    width: 100px;
+    border: 2px solid #008780;
     border-radius: 50%;
     margin-bottom: 10px;
+    object-fit: cover;
 }
 
 .profile-info {
@@ -32,7 +35,7 @@
 /* Profile Button */
 .profile-button {
     padding: 10px 15px;
-    background-color: #1e88e5;
+    background-color: #008780;
     color: white;
     border: none;
     cursor: pointer;
@@ -46,7 +49,8 @@
 }
 
 .profile-button:hover {
-    background-color: #1565c0;
+    background-color: white;
+    color: #008780;
     transform: scale(1.05);
 }
 
@@ -75,10 +79,10 @@
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-  }
-  
-  .myform-button {
-    background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.myform-button {
+    background-color: #008780;
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -88,15 +92,16 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .myform-button:hover {
-    background: linear-gradient(135deg, #0056b3, #004080);
+}
+
+.myform-button:hover {
+    background-color: white;
+    color: #008780;
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  .myform-button:active {
+}
+
+.myform-button:active {
     transform: scale(0.95);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
+}
