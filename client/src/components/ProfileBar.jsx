@@ -59,6 +59,7 @@ const ProfileBar = () => {
                 to="/userList" 
               />
             </div>
+            <NotificationPopover/>
           </div>
 
           <button 

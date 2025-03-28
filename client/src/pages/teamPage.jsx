@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "@/components/loading/loader";
+import JoinTeamService from "@/services/joinTeam/joinTeam";
 
 const TeamPage = () => {
   const { id } = useParams();  // Extract the ID from the URL
@@ -64,7 +65,20 @@ const TeamPage = () => {
   if (!team) return <Loader />;
 
   const handleJoinTeam = async () => {
-    console.log("Joining team...");
+    const response = await JoinTeamService.joinTeam(team.id);
+    if (response.success) {
+      toast({
+        title: " Request to join team sent successfully",
+        variant: "success",
+      });
+      navigate("/myTeams");
+    } else {
+      toast({
+        title: "Error joining team",
+        description: response.message,
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -128,6 +142,7 @@ const TeamPage = () => {
               ) : (
                 <Button 
                   className="w-full bg-[#008780] hover:bg-white/90 transition-colors duration-300"
+                  onClick={handleJoinTeam}
                 >
                   Join Team
                 </Button>
