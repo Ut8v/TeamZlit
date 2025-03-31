@@ -15,9 +15,14 @@ const getUserTeamsRoutes = require('./routes/findUserTeams/findUserTeams');
 const checkActiveFormRoutes = require('./routes/checkUserForms/checkUserForms');
 const formContentRoutes = require('./routes/formContent/getFormcontent');
 const myMatchedTeamsRoutes = require('./routes/myMatchedTeams/myMatchedTeams');
+const jointeamRoutes = require('./routes/joinTeam/joinTeam');
 const userListRoutes = require('./routes/userList/userList');
 const createPostRoutes = require('./routes/createPost/createPost');
 const indexPostRoutes = require('./routes/indexPost/indexPost');
+const notificationRoutes = require('./routes/notifications/noti');
+const acceptUserToTeamRoutes = require('./routes/joinTeam/acceptToTeam');
+const membersRoutes = require('./routes/findTeam/members');
+
 const rateLimit = require('express-rate-limit');
 const authenticateUser = require('./authMiddleware/authMiddleware');
 
@@ -75,6 +80,16 @@ app.use('/userList', authenticateUser, userListRoutes);//route to get user list
 //create Post routes
 app.use('/createPost', createPostRoutes);
 app.use('/indexPost', indexPostRoutes);
+
+app.use('/joinTeam', authenticateUser, jointeamRoutes);//route to join team
+
+app.use('/notification', authenticateUser, notificationRoutes); //route to fetch user notifications.
+
+app.use('/acceptUserToTeam', authenticateUser, acceptUserToTeamRoutes); //route to accept user to team
+
+app.use('/members', authenticateUser, membersRoutes); 
+
+
 
 app.listen(PORT, ()=> {
     console.log(`server running on port ${PORT}`);

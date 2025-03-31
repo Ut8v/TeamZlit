@@ -1,6 +1,7 @@
 const { response } = require('express');
 
 const {prisma, Prisma} = require('../database/index');
+const { acceptToTeam } = require('./joinTeam');
 class FormToFindTeamService {
 
     static async findTeam (data, userId) {
@@ -53,6 +54,44 @@ class FormToFindTeamService {
         }catch(error){
             console.log(`error`, error);
             return {success: false, error: err.message};
+        }
+    }
+
+    static async findMember(teamId) {
+        try{
+            const teamMembers = await prisma.acceptedTeams.findMany({
+                where: {
+                    teamId: Number(teamId),
+                    accepted: 1,
+                },
+                select: {
+                    user_id: true,
+                }
+            });
+
+            const users = await Promise.all(
+                teamMembers.map(async (member) => {
+                  const userInfo = await prisma.users.findUnique({
+                    where: {
+                      user_id: member.user_id,
+                    },
+                    select: {
+                      id: true,
+                      username: true,
+                    }
+                  });
+
+                  return {
+                    ...userInfo,
+                    id: userInfo.id.toString()
+                  };
+                })
+              );
+              
+            return { success: true, data: users };
+        }catch(error){
+            console.log(`error`, error);
+            return {success: false, error: error.message};
         }
     }
 }

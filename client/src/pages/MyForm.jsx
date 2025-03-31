@@ -1,8 +1,5 @@
 import GetFormContent from "@/services/getFormContent/getFormContent";
 import { useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Loader from "@/components/loading/loader";
 import { useToast } from "@/hooks/use-toast"
@@ -82,65 +79,73 @@ const MyForm = () => {
 
     return (
         <>
-        <div className="flex justify-center p-4">
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <CardTitle>{formContent.username}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{formContent.email}</p>
-                </CardHeader>
-                <CardContent>
-                    <p><strong>Role:</strong> {formContent.role}</p>
-                    <p><strong>Experience Level:</strong> {formContent.experienceLevel}</p>
-                    <p><strong>Availability:</strong> {formContent.availability}</p>
-                    <p><strong>Preferred Team Type:</strong> {formContent.preferredTeamType}</p>
-                    <p><strong>Portfolio:</strong> <a href={formContent.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-500">View Portfolio</a></p>
-                    <p><strong>Additional Notes:</strong> {formContent.additionalNotes}</p>
-                    <div className="mt-2">
-                        <p><strong>Skills:</strong></p>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                            {formContent.skills.map((skill, index) => (
-                                <Badge key={index} variant="outline">
-                                    {skill}
-                                </Badge>
-                            ))}
-                        </div>
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button variant="danger" onClick={deleteForm}>Delete</Button>
-                </CardFooter>
-            </Card>
-        </div>
-        <div className="flex justify-center p-4">
-            <h1 className="text-2xl font-bold">{ matchedTeamsData.length > 0 ? `My Matches: ` : `No Matches`}</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 relative">
-        {matchedTeamsData.map((team, index) => (
-        <div key={index} className="relative group">
-            <Card
-                className="w-full cursor-pointer"
-                onClick={() => navigate(`/teamPage/${team.id}`)}
-            >
-                <CardHeader className="p-2">
-                    <CardTitle className="text-sm font-semibold">{team.teamName}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-2">
-                    <p className="text-xs">{team.teamDescription}</p>
-                </CardContent>
-                <CardFooter className="p-2">
-                    <Button variant="primary" size="sm" className="w-full">
-                        View Team
-                    </Button>
-                </CardFooter>
-            </Card>
+  <div className="container py-5">
+    <div className="row justify-content-center mb-5">
+      <div className="col-md-8">
+        <div className="card shadow">
+          <div className="card-header text-center">
+            <h3 className="mb-0">{formContent.username}</h3>
+            <p className="text-muted mb-0">{formContent.email}</p>
+          </div>
+          <div className="card-body">
+            <p><strong>Role:</strong> {formContent.role}</p>
+            <p><strong>Experience Level:</strong> {formContent.experienceLevel}</p>
+            <p><strong>Availability:</strong> {formContent.availability}</p>
+            <p><strong>Preferred Team Type:</strong> {formContent.preferredTeamType}</p>
+            <p>
+              <strong>Portfolio:</strong>{" "}
+              <a href={formContent.portfolio} target="_blank" rel="noopener noreferrer">
+                View Portfolio
+              </a>
+            </p>
+            <p><strong>Additional Notes:</strong> {formContent.additionalNotes}</p>
 
-            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-muted text-primary text-xs px-2 py-1 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                Match Percentage: {team.match_percentage}%
+            <div className="mt-3">
+              <p><strong>Skills:</strong></p>
+              <div className="d-flex flex-wrap gap-2">
+                {formContent.skills.map((skill, index) => (
+                  <span key={index} className="badge bg-secondary">{skill}</span>
+                ))}
+              </div>
             </div>
+          </div>
+          <div className="card-footer text-center">
+            <button className="btn btn-danger" onClick={deleteForm}>Delete Form</button>
+          </div>
         </div>
-        ))}
+      </div>
     </div>
+
+    <div className="text-center mb-4">
+      <h2>{matchedTeamsData.length > 0 ? "My Matches" : "No Matches"}</h2>
     </div>
-    </>  
+    <div className="row g-4">
+      {matchedTeamsData.map((team, index) => (
+        <div key={index} className="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div
+            className="card h-100 shadow-sm position-relative"
+            onClick={() => navigate(`/teamPage/${team.id}`)}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="card-header text-center py-2">
+              <h5 className="mb-0">{team.teamName}</h5>
+            </div>
+            <div className="card-body">
+              <p className="card-text small">{team.teamDescription}</p>
+            </div>
+            <div className="card-footer bg-transparent">
+              <button className="btn btn-primary w-100">View Team</button>
+            </div>
+            <div className="position-absolute top-7 start-50 translate-middle badge bg-info text-dark p-2 rounded shadow">
+              {team.match_percentage}% Match
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</>
+
     );
 };
 

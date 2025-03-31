@@ -139,14 +139,6 @@ model Weekdays {
   name String
 }
 
-model acceptedTeams {
-  id           BigInt   @id @default(autoincrement())
-  created_at   DateTime @default(now()) @db.Timestamptz(6)
-  user_id      String?  @default(dbgenerated("auth.uid()")) @db.Uuid
-  teamId       Int?
-  accepted     Int?     @db.SmallInt
-  team_ownerId String?  @db.Uuid
-}
 
 model createPost {
   id         Int      @id @default(autoincrement())
@@ -188,16 +180,6 @@ model lookingForTeam {
   users             users?   @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model notifications {
-  id           Int      @id @default(autoincrement()) @db.SmallInt
-  created_at   DateTime @default(now()) @db.Timestamptz(6)
-  recipient_id String?  @default(dbgenerated("auth.uid()")) @db.Uuid
-  message      String?
-  read         Boolean?
-  teamId       Int?     @db.SmallInt
-  sender_id    String?  @db.Uuid
-}
-
 model posts {
   id         BigInt   @id @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
@@ -224,4 +206,26 @@ model users {
   createTeam       createTeam[]
   lookingForTeam   lookingForTeam[]
   posts            posts?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model acceptedTeams {
+  id           BigInt   @id @default(autoincrement())
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  user_id      String?  @default(dbgenerated("auth.uid()")) @db.Uuid
+  teamId       Int?
+  accepted     Int?     @db.SmallInt
+  team_ownerId String?  @db.Uuid
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model notifications {
+  id           Int      @id @default(autoincrement()) @db.SmallInt
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  recipient_id String?  @default(dbgenerated("auth.uid()")) @db.Uuid
+  message      String?
+  read         Boolean?
+  teamId       Int?     @db.SmallInt
+  sender_id    String?  @db.Uuid
+  type         String?
 }

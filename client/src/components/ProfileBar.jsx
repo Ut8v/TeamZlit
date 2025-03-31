@@ -3,6 +3,7 @@ import '../styles/profile-bar.css';
 import profilePic from '../assets/user-profile-icon.jpg';
 import { useAuth } from '../auth/authContext'
 import { useNavigate } from 'react-router-dom';
+import NotificationPopover from './notification/notification';
 import { User, FileText, Users, LogOut } from 'lucide-react';
 
 const ProfileBar = () => {
@@ -58,6 +59,7 @@ const ProfileBar = () => {
                 to="/userList" 
               />
             </div>
+            <NotificationPopover />
           </div>
 
           <button 
