@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/auth/authContext";
 import { useEffect, useState } from "react";
-
 import {
   Form,
   FormControl,
@@ -94,6 +93,8 @@ const FormToFindTeamComponent = () => {
     portfolio: z.string().url("Invalid URL. Please provide a valid link.").optional(),
     preferredTeamType: z.string().min(1, { message: "Preferred team type is required." }),
     additionalNotes: z.string().optional(),
+    makePost: z.boolean().optional(),
+    postType: z.string(),
   });
 
   const form = useForm({
@@ -109,6 +110,8 @@ const FormToFindTeamComponent = () => {
       portfolio: "",
       preferredTeamType: "",
       additionalNotes: "",
+      makePost: false,
+      postType: "findTeam"
     },
   });
 
@@ -546,6 +549,16 @@ const FormToFindTeamComponent = () => {
               </p>
             </div>
           )}
+
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="makePost"
+            onCheckedChange={(checked) => {
+              form.setValue("makePost", checked)
+            }}
+          />
+          <label htmlFor="makePost">Make a public post?</label>
+        </div>
 
           {/* Action Buttons */}
           <div className="flex space-x-4 pt-2">
