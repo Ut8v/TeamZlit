@@ -37,7 +37,16 @@ class TeamIndexService {
                 where: { id: Number(teamId) }
             });
 
-            const myTeam = team.user_id === userFromToken.user.id;
+            // check if user is an active member of the team
+            const activeMember = await prisma.acceptedTeams.findFirst({
+                where: {
+                    teamId: Number(teamId),
+                    user_id: userFromToken.user.id,
+                    accepted: 1,
+                }
+            });
+
+            const myTeam = team.user_id === userFromToken.user.id || !!activeMember;
             
             if (!team) {
                 return {
@@ -48,7 +57,7 @@ class TeamIndexService {
 
             return {
                 success: true,
-                data: {...team, isMyTeam: myTeam}
+                data: {...team, isMyTeam: myTeam, memberonly: !!activeMember}
             };
         } catch(error) {
             return {

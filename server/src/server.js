@@ -17,6 +17,9 @@ const formContentRoutes = require('./routes/formContent/getFormcontent');
 const myMatchedTeamsRoutes = require('./routes/myMatchedTeams/myMatchedTeams');
 const jointeamRoutes = require('./routes/joinTeam/joinTeam');
 const userListRoutes = require('./routes/userList/userList');
+const notificationRoutes = require('./routes/notifications/noti');
+const acceptUserToTeamRoutes = require('./routes/joinTeam/acceptToTeam');
+const membersRoutes = require('./routes/findTeam/members'); 
 const rateLimit = require('express-rate-limit');
 const authenticateUser = require('./authMiddleware/authMiddleware');
 
@@ -72,6 +75,12 @@ app.use('/getMyMatchedTeams', authenticateUser, myMatchedTeamsRoutes);//route to
 app.use('/userList', authenticateUser, userListRoutes);//route to get user list
 
 app.use('/joinTeam', authenticateUser, jointeamRoutes);//route to join team
+
+app.use('/notification', authenticateUser, notificationRoutes); //route to fetch user notifications.
+
+app.use('/acceptUserToTeam', authenticateUser, acceptUserToTeamRoutes); //route to accept user to team
+
+app.use('/members', authenticateUser, membersRoutes); 
 
 
 
