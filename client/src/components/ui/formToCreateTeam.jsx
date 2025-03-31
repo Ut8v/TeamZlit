@@ -94,8 +94,12 @@ const FormToCreateTeamComponent = () => {
       required_error: "You need to select a visibility."
     }),
     additionalNotes: z.string().optional(),
+    makePost: z.boolean().optional(),
+    postType: z.string(),
   });
 
+
+// const [isMakePostChecked, setIsMakePostChecked] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -107,6 +111,8 @@ const FormToCreateTeamComponent = () => {
       skills: [],
       teamVisibility: "",
       additionalNotes: "",
+      makePost: false,
+      postType: "createTeam",
     },
   });
 
@@ -491,6 +497,16 @@ const FormToCreateTeamComponent = () => {
               </FormItem>
             )}
           />
+
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="makePost"
+            onCheckedChange={(checked) => {
+              form.setValue("makePost", checked)
+            }}
+          />
+          <label htmlFor="makePost">Make a public post?</label>
+        </div>
 
           {/* Action Buttons */}
           <div className="flex space-x-4 pt-2">

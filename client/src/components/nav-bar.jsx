@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useAuth } from '../auth/authContext';
-import { Home, Search, PlusCircle, List } from 'lucide-react';
+import { Home, Search, PlusCircle, List, SignpostBig } from 'lucide-react';
 
 const NavigationBar = () => {
   const { token } = useAuth();
@@ -47,6 +47,11 @@ const NavigationBar = () => {
             to="/teamIndex" 
             icon={<List className="w-5 h-5 flex-shrink-0" />} 
             text="Browse Teams" 
+          />
+          <NavLink 
+            to="/postIndex" 
+            icon={<SignpostBig className="w-5 h-5 flex-shrink-0" />} 
+            text="Browse Posts" 
           />
         </div>
       )}

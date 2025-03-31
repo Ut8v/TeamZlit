@@ -16,6 +16,8 @@ import UserProfile from './pages/userProfile';
 import MyForm from './pages/MyForm';
 import UserListPage from './pages/userList';
 import UserPage from './pages/userPage';
+import PostIndex from './pages/postIndex'
+import PostPage from './pages/postPage'
 
 function App() {
   const { token } = useAuth();
@@ -49,9 +51,11 @@ function App() {
             <Route path="/myForms" element={<MyForm />} />
             <Route path="/userList" element={<UserListPage/>} />
             <Route path="/userPage/:id" element={<UserPage />} />
+            <Route path="/postIndex" element={<PostIndex />} />
+            <Route path="/postPage/:id"   element={<PostPage />} />
             </>
             : <Route path='*' element={<Navigate to='/' />} />
-            }
+            }          
           </Routes>
       </div>
 
