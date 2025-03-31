@@ -39,7 +39,13 @@ const TeamIndex = () => {
     const typeMap = {
       developmentteam: "Development Team",
       researchgroup: "Research Group",
-      studygroup: "Study Group"
+      studygroup: "Study Group",
+      airesearch: "AI Research Team",
+      datascience: "Data Science Team",
+      designteam: "Design Team",
+      marketingteam: "Marketing Team",
+      productteam: "Product Team",
+      other: "Other",
     };
     return typeMap[teamType.toLowerCase()] || teamType;
   };

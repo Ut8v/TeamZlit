@@ -16,6 +16,8 @@ const checkActiveFormRoutes = require('./routes/checkUserForms/checkUserForms');
 const formContentRoutes = require('./routes/formContent/getFormcontent');
 const myMatchedTeamsRoutes = require('./routes/myMatchedTeams/myMatchedTeams');
 const userListRoutes = require('./routes/userList/userList');
+const createPostRoutes = require('./routes/createPost/createPost');
+const indexPostRoutes = require('./routes/indexPost/indexPost');
 const rateLimit = require('express-rate-limit');
 const authenticateUser = require('./authMiddleware/authMiddleware');
 
@@ -69,6 +71,10 @@ app.use('/formContent', authenticateUser, formContentRoutes);//route to get form
 app.use('/getMyMatchedTeams', authenticateUser, myMatchedTeamsRoutes);//route to get my matched teams);
 
 app.use('/userList', authenticateUser, userListRoutes);//route to get user list
+
+//create Post routes
+app.use('/createPost', createPostRoutes);
+app.use('/indexPost', indexPostRoutes);
 
 app.listen(PORT, ()=> {
     console.log(`server running on port ${PORT}`);

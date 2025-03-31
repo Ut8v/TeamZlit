@@ -1,7 +1,16 @@
 import axios from "@/lib/axios/axios";
+import { FormToCreatePostService } from "../../services/FormToCreatePostService/createPost"
+
 export class FormToFindTeamService {
   static async findTeam(formData) {
     try {
+      if(formData.makePost == true){    
+              const postResult = await FormToCreatePostService.createPost(formData);
+      
+              if (!postResult.success) {
+                return { success: false, message: postResult.message };
+              }
+            }
 
       const response = await axios({
         method: 'post',

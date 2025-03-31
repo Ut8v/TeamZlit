@@ -1,8 +1,18 @@
 import axios from "@/lib/axios/axios";
 const apiUrl = import.meta.env.VITE_API_URL;
+import { FormToCreatePostService } from "../../services/FormToCreatePostService/createPost"
+
 export class FormToCreateTeamService {
   static async createTeam(formData) {
     try {
+      if(formData.makePost == true){
+        const postResult = await FormToCreatePostService.createPost(formData);
+
+        if (!postResult.success) {
+          return { success: false, message: postResult.message };
+        }
+      }
+
       const response = await axios({
         method: 'post',
         url: `${apiUrl}/createTeam`,

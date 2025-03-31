@@ -8,46 +8,152 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model posts {
-  id         BigInt   @id @default(autoincrement())
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  posts      Json?    @db.Json
-  users      users    @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+model ExperienceLevels {
+  id   Int    @id @default(autoincrement())
+  name String
 }
 
-model users {
-  id               BigInt             @id @unique @default(autoincrement())
-  username         String             @unique
-  email            String             @unique
-  created_at       DateTime?          @default(now()) @db.Timestamptz(6)
-  bio              String?
-  user_id          String             @unique @db.Uuid
-  UserMatchedTeams UserMatchedTeams[]
-  createTeam       createTeam[]
-  lookingForTeam   lookingForTeam[]
-  posts            posts?
+model InterestAreas {
+  id       Int    @id @default(autoincrement())
+  interest String
 }
 
-model lookingForTeam {
-  id                Int      @id @default(autoincrement())
-  username          String
-  email             String   @unique
-  skills            String[]
-  role              String
-  experienceLevel   String
-  availability      String
-  interestAreas     String?
-  portfolio         String?
-  preferredTeamType String
-  additionalNotes   String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  user_id           String?  @db.Uuid
-  users             users?   @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+model Roles {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model Skills {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model Statuses {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model TeamRoles {
+  id         Int       @id @default(autoincrement())
+  team_id    Int
+  role_id    Int
+  is_filled  Boolean
+  deleted_at DateTime? @db.Timestamptz(6)
+}
+
+model TeamSkills {
+  id       Int @id @default(autoincrement())
+  team_id  Int
+  skill_id Int
+}
+
+model TeamTypes {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model TeamUsers {
+  id           BigInt    @id @default(autoincrement())
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+  team_role_id Int
+  user_id      Int
+}
+
+model Teams {
+  id               Int       @id @default(autoincrement())
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  user_id          Int
+  team_type_id     Int
+  visibility_id    Int
+  status_id        Int
+  additional_notes String?
+}
+
+model TimeSlots {
+  id         Int      @id @default(autoincrement())
+  name       String
+  start_time DateTime @db.Timetz(6)
+  end_time   DateTime @db.Timetz(6)
+}
+
+model UserAvailabilities {
+  id           Int @id @default(autoincrement())
+  user_id      Int
+  weekday_id   Int
+  time_slot_id Int
+}
+
+model UserInterestAreas {
+  id               Int  @id @default(autoincrement())
+  user_id          Int
+  interest_area_id Int?
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserMatchedTeams {
+  id               BigInt      @id @default(autoincrement())
+  created_at       DateTime    @default(now()) @db.Timestamptz(6)
+  user_id          String?     @default(dbgenerated("auth.uid()")) @db.Uuid
+  team_id          Int?
+  match_percentage Int?        @db.SmallInt
+  createTeam       createTeam? @relation(fields: [team_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users            users?      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model UserPreferredTeamTypes {
+  id           Int @id @default(autoincrement())
+  user_id      Int
+  team_type_id Int
+}
+
+model UserRoles {
+  id      Int @id @default(autoincrement())
+  user_id Int
+  role_id Int
+}
+
+model UserSkills {
+  id       Int @id @default(autoincrement())
+  user_id  Int
+  skill_id Int
+}
+
+model UsersLookingForTeams {
+  id                  Int       @id @default(autoincrement())
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  deleted_at          DateTime? @db.Timestamptz(6)
+  user_id             Int
+  experience_level_id Int
+  status_id           Int
+}
+
+model Visibilities {
+  id    Int    @id @default(autoincrement())
+  Level String
+}
+
+model Weekdays {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model acceptedTeams {
+  id           BigInt   @id @default(autoincrement())
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  user_id      String?  @default(dbgenerated("auth.uid()")) @db.Uuid
+  teamId       Int?
+  accepted     Int?     @db.SmallInt
+  team_ownerId String?  @db.Uuid
+}
+
+model createPost {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  posts      Json?    @db.Json
+}
+
 model createTeam {
   id               Int                @id @default(autoincrement())
   created_at       DateTime           @default(now()) @db.Timestamptz(6)
@@ -64,8 +170,41 @@ model createTeam {
   users            users?             @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model lookingForTeam {
+  id                Int      @id @default(autoincrement())
+  username          String
+  email             String   @unique
+  skills            String[]
+  role              String
+  experienceLevel   String
+  availability      String
+  interestAreas     String?
+  portfolio         String?
+  preferredTeamType String
+  additionalNotes   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime
+  user_id           String?  @db.Uuid
+  users             users?   @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model notifications {
+  id           Int      @id @default(autoincrement()) @db.SmallInt
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  recipient_id String?  @default(dbgenerated("auth.uid()")) @db.Uuid
+  message      String?
+  read         Boolean?
+  teamId       Int?     @db.SmallInt
+  sender_id    String?  @db.Uuid
+}
+
+model posts {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  posts      Json?    @db.Json
+  users      users    @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 model rolesRequired {
   id         BigInt   @id @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
@@ -74,167 +213,15 @@ model rolesRequired {
   quantity   Int?
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model ExperienceLevels {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model InterestAreas {
-  id       Int    @id @default(autoincrement())
-  interest String
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Roles {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Skills {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Statuses {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model TeamRoles {
-  id         Int       @id @default(autoincrement())
-  team_id    Int
-  role_id    Int
-  is_filled  Boolean
-  deleted_at DateTime? @db.Timestamptz(6)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model TeamSkills {
-  id       Int @id @default(autoincrement())
-  team_id  Int
-  skill_id Int
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model TeamTypes {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model TeamUsers {
-  id           BigInt    @id @default(autoincrement())
-  created_at   DateTime  @default(now()) @db.Timestamptz(6)
-  deleted_at   DateTime? @db.Timestamptz(6)
-  team_role_id Int
-  user_id      Int
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Teams {
-  id               Int       @id @default(autoincrement())
-  created_at       DateTime  @default(now()) @db.Timestamptz(6)
-  deleted_at       DateTime? @db.Timestamptz(6)
-  user_id          Int
-  team_type_id     Int
-  visibility_id    Int
-  status_id        Int
-  additional_notes String?
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model TimeSlots {
-  id         Int      @id @default(autoincrement())
-  name       String
-  start_time DateTime @db.Timetz(6)
-  end_time   DateTime @db.Timetz(6)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model UserAvailabilities {
-  id           Int @id @default(autoincrement())
-  user_id      Int
-  weekday_id   Int
-  time_slot_id Int
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model UserInterestAreas {
-  id               Int  @id @default(autoincrement())
-  user_id          Int
-  interest_area_id Int?
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model UserPreferredTeamTypes {
-  id           Int @id @default(autoincrement())
-  user_id      Int
-  team_type_id Int
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model UserRoles {
-  id      Int @id @default(autoincrement())
-  user_id Int
-  role_id Int
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model UserSkills {
-  id       Int @id @default(autoincrement())
-  user_id  Int
-  skill_id Int
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model UsersLookingForTeams {
-  id                  Int       @id @default(autoincrement())
-  created_at          DateTime  @default(now()) @db.Timestamptz(6)
-  deleted_at          DateTime? @db.Timestamptz(6)
-  user_id             Int
-  experience_level_id Int
-  status_id           Int
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Visibilities {
-  id    Int    @id @default(autoincrement())
-  Level String
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Weekdays {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-model createPost {
-  id         BigInt   @id @default(autoincrement())
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  posts      Json?    @db.Json
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model UserMatchedTeams {
-  id               BigInt      @id @default(autoincrement())
-  created_at       DateTime    @default(now()) @db.Timestamptz(6)
-  user_id          String?     @default(dbgenerated("auth.uid()")) @db.Uuid
-  team_id          Int?
-  match_percentage Int?        @db.SmallInt
-  createTeam       createTeam? @relation(fields: [team_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  users            users?      @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
+model users {
+  id               BigInt             @id @unique @default(autoincrement())
+  username         String             @unique
+  email            String             @unique
+  created_at       DateTime?          @default(now()) @db.Timestamptz(6)
+  bio              String?
+  user_id          String             @unique @db.Uuid
+  UserMatchedTeams UserMatchedTeams[]
+  createTeam       createTeam[]
+  lookingForTeam   lookingForTeam[]
+  posts            posts?
 }
