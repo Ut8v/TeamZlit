@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useAuth } from '../auth/authContext';
 import { Home, Search, PlusCircle, List, SignpostBig } from 'lucide-react';
@@ -6,6 +6,7 @@ import { Home, Search, PlusCircle, List, SignpostBig } from 'lucide-react';
 const NavigationBar = () => {
   const { token } = useAuth();
   
+  // eslint-disable-next-line react/prop-types
   const NavLink = ({ to, icon, text }) => (
     <Link 
       to={to} 
