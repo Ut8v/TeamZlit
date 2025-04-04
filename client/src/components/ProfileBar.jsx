@@ -15,6 +15,7 @@ const ProfileBar = () => {
     Navigate('/');
   }
 
+  // eslint-disable-next-line react/prop-types
   const ProfileBarButton = ({ icon, text, to }) => (
     <Link to={to} className="w-full no-underline">
       <button className="profile-button flex items-center justify-center gap-2">

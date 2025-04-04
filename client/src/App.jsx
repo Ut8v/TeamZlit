@@ -18,9 +18,15 @@ import UserListPage from './pages/userList';
 import UserPage from './pages/userPage';
 import PostIndex from './pages/postIndex'
 import PostPage from './pages/postPage'
+import Loader from './components/loading/loader';
+
 
 function App() {
-  const { token } = useAuth();
+  const { token, loading } = useAuth();
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <BrowserRouter>
@@ -32,33 +38,31 @@ function App() {
 
       {/* Main page content */}
       <div className="page-content">
-          <Routes>
-            {!token ? 
-            <>
+      <Routes>
+        {!token ? (
+          <>
             <Route path="/signup" element={<SignUp />} />
-            <Route path={'/'} element={<Login />} />
-            </>
-            : <Route path='*' element={<Navigate to='/home' />} />
-        }
-            {token ?
-            <>
+            <Route path="/" element={<Login />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </>
+        ) : (
+          <>
+            <Route path="/home" element={<Home />} />
             <Route path="/findTeam" element={<FormToFindTeamComponent />} />
             <Route path="/createTeam" element={<FormToCreateTeamComponent />} />
-            <Route path={'/home'} element={<Home />} />
-            <Route path="/teamPage/:id"   element={<TeamPage />} />
+            <Route path="/teamPage/:id" element={<TeamPage />} />
             <Route path="/teamIndex" element={<TeamIndex />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/myForms" element={<MyForm />} />
-            <Route path="/userList" element={<UserListPage/>} />
+            <Route path="/userList" element={<UserListPage />} />
             <Route path="/userPage/:id" element={<UserPage />} />
             <Route path="/postIndex" element={<PostIndex />} />
-            <Route path="/postPage/:id"   element={<PostPage />} />
-            </>
-            : <Route path='*' element={<Navigate to='/' />} />
-            }          
-          </Routes>
+            <Route path="/postPage/:id" element={<PostPage />} />
+            <Route path="*" element={<Navigate to="/home" />} /> {/* fallback only for unmatched routes */}
+          </>
+        )}
+      </Routes>
       </div>
-
       {/* Right Profile Bar */}
       <div className="profile-bar">
         <ProfileBar />

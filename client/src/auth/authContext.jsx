@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [userEmail, setUserEmail] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const storedToken = sessionStorage.getItem("token");
@@ -20,6 +21,8 @@ export const AuthProvider = ({ children }) => {
 
             setLoggedIn(true);
         }
+
+        setLoading(false);
     }, []);
 
     const login = async (userData) => {
@@ -53,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, user, userEmail, loggedIn, login, logout }}>
+        <AuthContext.Provider value={{ token, user, userEmail, loggedIn, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

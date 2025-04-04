@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { PostIndexService } from '@/services/PostIndexService';
 import { useNavigate } from 'react-router-dom';
 import Loader from '@/components/loading/loader';
@@ -73,7 +72,6 @@ const PostIndex = () => {
                 <Badge 
                   className="mb-4 bg-[#008780] text-white hover:bg-[#008780]/90"
                 >
-                  {console.log(post.posts.teamType)}
                   {formatTeamType(post.posts.teamType)}
                   {/* {post.posts.teamType || "Description not available"} */}
                 </Badge>

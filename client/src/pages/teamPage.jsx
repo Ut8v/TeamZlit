@@ -33,6 +33,7 @@ const TeamPage = () => {
       if(fetchMembers.success) {
         setLoadingMembers(false);
         setMembers(fetchMembers.data.data);
+        console.log(members, `members`);
       }
       if (response.success) {
         setTeam(response.data.data);
@@ -98,21 +99,23 @@ const TeamPage = () => {
           <p className="text-center text-lg text-white/80 mt-2">{team.teamDescription}</p>
           <strong className="text-lg text-white mt-2">Team Members</strong>
           {loadingMembers ? (
-            <Loader />
-          ) : (
-            <div className="flex justify-center gap-3 mt-4 flex-wrap">
-              {members.map((member) => (
-                <a
-                  key={member.id}
-                  onClick={() => navigate(`/userPage/${member.id}`)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-black font-semibold text-sm hover:scale-105 transition-transform shadow-md"
-                  title={member.username}
-                >
-                  {member.username.charAt(0).toUpperCase()}
-                </a>
-              ))}
-            </div>
-          )}
+              <Loader />
+            ) : members.length === 0 ? (
+              <p className="text-red-500 text-sm mt-4">No active team members</p>
+            ) : (
+              <div className="flex justify-center gap-3 mt-4 flex-wrap">
+                {members.map((member) => (
+                  <a
+                    key={member.id}
+                    onClick={() => navigate(`/userPage/${member.id}`)}
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-black font-semibold text-sm hover:scale-105 transition-transform shadow-md"
+                    title={member.username}
+                  >
+                    {member.username ? member.username.charAt(0).toUpperCase() : '?'}
+                  </a>
+                ))}
+              </div>
+            )}
         </CardHeader>
         <CardContent className="p-6">
           {/* Display Skills */}
