@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { PostIndexService } from '@/services/PostIndexService';
 import { useNavigate } from 'react-router-dom';
 import Loader from '@/components/loading/loader';
@@ -10,6 +11,7 @@ import Loader from '@/components/loading/loader';
 const PostIndex = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,9 +36,6 @@ const PostIndex = () => {
     navigate(`/postPage/${postId}`);
   };
 
-  const createTeamPosts = posts.filter(posts => posts.posts.postType === 'createTeam');
-  const findTeamPosts = posts.filter(posts => posts.posts.postType === 'findTeam');
-
   const formatTeamType = (teamType) => {
     const typeMap = {
       developmentteam: "Development Team",
@@ -49,8 +48,31 @@ const PostIndex = () => {
       productteam: "Product Team",
       other: "Other",
     };
-    return typeMap[teamType.toLowerCase()] || teamType;
+    return typeMap[teamType?.toLowerCase()] || teamType || "Unknown Team Type";
   };
+
+  const createTeamPosts = posts.filter(
+    (post) =>
+      post.posts.postType === 'createTeam' &&
+      (post.posts.teamName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      formatTeamType(post.posts.teamType).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.teamDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.roles.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.additionalNotes.toLowerCase().includes(searchTerm.toLowerCase())) 
+  );
+
+  const findTeamPosts = posts.filter(
+    (post) =>
+      post.posts.postType === 'findTeam' &&
+      (post.posts.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.portfolio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.experienceLevel.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.availability.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.interestAreas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.posts.additionalNotes.toLowerCase().includes(searchTerm.toLowerCase())) 
+  );
 
   if (loading) {
     return <Loader />;
@@ -58,22 +80,34 @@ const PostIndex = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <h1 className="text-xl font-bold mb-4">Teams Seeking Members</h1>
+
+      {/* Search Bar */}
+      <div className="mb-6 w-full max-w-md">
+        <Input
+          type="text"
+          placeholder="Search posts..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-2 border rounded-md"
+        />
+      </div>
+
+      <h1 className="text-xl font-bold mb-4">Teams Seeking Members</h1>     
+
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {createTeamPosts.map((post) => (
-            <Card 
-              key={post.id}               
+            <Card
+              key={post.id}
               className="bg-[#2e5669] border-[#0f3445] shadow-lg"
             >
               <CardContent className="p-6 text-center">
-                <h2 className="text-2xl font-bold text-white mb-4">{post.posts.teamName}</h2>
-                
-                <Badge 
-                  className="mb-4 bg-[#008780] text-white hover:bg-[#008780]/90"
-                >
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  {post.posts.teamName}
+                </h2>
+
+                <Badge className="mb-4 bg-[#008780] text-white hover:bg-[#008780]/90">
                   {formatTeamType(post.posts.teamType)}
-                  {/* {post.posts.teamType || "Description not available"} */}
                 </Badge>
 
                 <p className="text-white/80 text-center mt-2 mb-4">
@@ -86,17 +120,11 @@ const PostIndex = () => {
                   <strong>Looking for:</strong> {post.posts.roles}
                 </div>
 
-                {/* <div className="text-white/80 mb-4">
-                  <strong>Desired Skills:</strong> {post.posts.skills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
-                  ))}
-                </div> */}
-
                 <div className="text-white/80 mb-4">
                   <strong>Notes:</strong> {post.posts.additionalNotes}
                 </div>
 
-                <Button 
+                <Button
                   className="w-full bg-[#008780] hover:bg-[#3fb182] transition-colors duration-300"
                   onClick={() => handleViewDetails(post.id)}
                 >
@@ -114,12 +142,14 @@ const PostIndex = () => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {findTeamPosts.map((post) => (
-            <Card 
-              key={post.id} 
+            <Card
+              key={post.id}
               className="bg-[#2e5669] border-[#0f3445] shadow-lg"
             >
               <CardContent className="p-6 text-center">
-                <h2 className="text-2xl font-bold text-white mb-4">{post.posts.username}</h2>             
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  {post.posts.username}
+                </h2>
 
                 <p className="text-white/80 text-center mt-2 mb-4">
                   {post.posts.email}
@@ -147,17 +177,11 @@ const PostIndex = () => {
                   <strong>Interest Areas:</strong> {post.posts.interestAreas}
                 </div>
 
-                {/* <div className="text-white/80 mb-4">
-                  <strong>Skills:</strong> {post.posts.skills.map((skill, index) => (
-                  <li key={index}>{skill}</li>
-                  ))}
-                </div> */}
-
                 <div className="text-white/80 mb-4">
                   <strong>Notes:</strong> {post.posts.additionalNotes}
                 </div>
 
-                <Button 
+                <Button
                   className="w-full bg-[#008780] hover:bg-[#3fb182] transition-colors duration-300"
                   onClick={() => handleViewDetails(post.id)}
                 >
@@ -173,4 +197,3 @@ const PostIndex = () => {
 };
 
 export default PostIndex;
-
