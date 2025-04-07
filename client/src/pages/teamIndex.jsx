@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { TeamIndexService } from '@/services/TeamIndexService';
 import { useNavigate } from 'react-router-dom';
 import Loader from '@/components/loading/loader';
@@ -10,6 +11,7 @@ import Loader from '@/components/loading/loader';
 const TeamIndex = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,15 +51,35 @@ const TeamIndex = () => {
     return typeMap[teamType.toLowerCase()] || teamType;
   };
 
+  const filteredTeams = teams.filter(
+    (team) =>
+      team.teamName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      formatTeamType(team.teamType).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      team.teamDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      team.roles.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return <Loader />;
   }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
+
+      {/* Search Bar */}
+      <div className="mb-6 w-full max-w-md">
+        <Input
+          type="text"
+          placeholder="Search teams..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-2 border rounded-md"
+        />
+      </div>
+      
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {teams.map((team) => (
+          {filteredTeams.map((team) => (
             <Card 
               key={team.id} 
               className="bg-[#2e5669] border-[#0f3445] shadow-lg"
