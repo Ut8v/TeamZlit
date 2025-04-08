@@ -174,7 +174,7 @@ model lookingForTeam {
   preferredTeamType String
   additionalNotes   String?
   createdAt         DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
   user_id           String?  @db.Uuid
   users             users?   @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 }
