@@ -33,7 +33,7 @@ class FormToFindTeamService {
                   };
                 }
               }
-            return {success: false, error: err.message};
+            return {success: false, error: error.message};
         }
        
     }
