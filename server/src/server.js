@@ -26,7 +26,7 @@ const membersRoutes = require('./routes/findTeam/members');
 const rateLimit = require('express-rate-limit');
 const authenticateUser = require('./authMiddleware/authMiddleware');
 
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 
 app.use(cors({
     origin: process.env.URL, 
